@@ -1,0 +1,57 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+subroutine overlap(neq,x,y,const_bn,m) ! in ../../D_coeff/source/smatrix.f90
+    integer, optional,intent(in),check(len(x)>=neq),depend(x) :: neq=len(x)
+    double complex dimension(neq),intent(in) :: x
+    double complex dimension(neq),intent(in),depend(neq) :: y
+    double precision dimension(neq),intent(in),depend(neq) :: const_bn
+    double complex dimension(neq,neq),intent(out),depend(neq,neq) :: m
+end subroutine overlap
+subroutine hamiltonian(neq,ksi,eta,omega,params,s,h,m1) ! in ../../D_coeff/source/hmatrix.f90
+    integer, optional,intent(in),check(len(ksi)>=neq),depend(ksi) :: neq=len(ksi)
+    double complex dimension(neq),intent(in) :: ksi
+    double complex dimension(neq),intent(in),depend(neq) :: eta
+    double precision dimension(neq),intent(in),depend(neq) :: omega
+    double precision dimension(15),intent(in) :: params
+    double complex dimension(neq,neq),intent(in),depend(neq,neq) :: s
+    double complex dimension(neq,neq),intent(out),depend(neq,neq) :: h
+    double complex dimension(neq,neq),intent(out),depend(neq,neq) :: m1
+end subroutine hamiltonian
+subroutine change_var(neq,q,p,ksi,eta,omega,phase) ! in ../../D_coeff/source/change_var_mod.f90
+    integer, optional,intent(in),check(len(q)>=neq),depend(q) :: neq=len(q)
+    double precision dimension(neq),intent(in) :: q
+    double precision dimension(neq),intent(in),depend(neq) :: p
+    double complex dimension(neq),intent(out),depend(neq) :: ksi
+    double complex dimension(neq),intent(out),depend(neq) :: eta
+    double precision dimension(neq),intent(in),depend(neq) :: omega
+    double precision dimension(neq),intent(in),depend(neq) :: phase
+end subroutine change_var
+subroutine read_params(switch_bn,file_params,params) ! in ../../potential/pot_der.f90
+    integer intent(in) :: switch_bn
+    character*40 intent(in) :: file_params
+    double precision dimension(15),intent(out) :: params
+end subroutine read_params
+subroutine potential_energy(x,params,v) ! in ../../potential/pot_der.f90
+    double precision intent(in) :: x
+    double precision dimension(15),intent(in) :: params
+    double precision intent(out) :: v
+end subroutine potential_energy
+subroutine diff_potential_energy(x,params,dv) ! in ../../potential/pot_der.f90
+    double precision intent(in) :: x
+    double precision dimension(15),intent(in) :: params
+    double precision intent(out) :: dv
+end subroutine diff_potential_energy
+subroutine diff2_potential_energy(x,params,d2v) ! in ../../potential/pot_der.f90
+    double precision intent(in) :: x
+    double precision dimension(15),intent(in) :: params
+    double precision intent(out) :: d2v
+end subroutine diff2_potential_energy
+subroutine diff3_potential_energy(x,params,d3v) ! in ../../potential/pot_der.f90
+    double precision intent(in) :: x
+    double precision dimension(15),intent(in) :: params
+    double precision intent(out) :: d3v
+end subroutine diff3_potential_energy
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

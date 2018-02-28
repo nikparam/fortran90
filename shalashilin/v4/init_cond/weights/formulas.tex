@@ -1,0 +1,72 @@
+\documentclass[a4paper,14pt]{extarticle}
+% Стандартные формульные пакеты
+\usepackage{float,amsmath,esint,amsfonts,wrapfig,bbm}
+\usepackage{indentfirst}
+\usepackage[usenames]{color}
+\usepackage{multirow}
+%выставляем поля
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+% Русский текст в формулах
+\usepackage{mathtext}
+% Подключение русского языка
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage[utf8]{inputenc}
+% Рисунки
+\usepackage{graphicx,caption,subcaption}
+% Landscape page
+\usepackage{lscape}
+\renewcommand{\arraystretch}{1.1}
+
+\begin{document}
+Выберем базис гауссовых волновых пакетов, центрированных в фазовом пространстве в точках $(a,0),\ (-a,0),\ (0,a),\ (0,-a)$, где $a$ --- вариьируемый параметр.
+Данные функции имеют вид:
+$$\psi_1(x|a) = e^{ -0.5\omega(x - a)^2 }$$
+$$\psi_2(x|a) = e^{ -0.5\omega(x + a)^2 }$$
+$$\psi_3(x|a) = e^{ -0.5\omega x^2 + iax }$$
+$$\psi_4(x|a) = e^{ -0.5\omega x^2 - iax }$$
+
+Изучим, как выглядят вариации функций $\psi_i$. Для этого запишем выражения для $\psi_i(x|a+\delta a)$:
+$$\psi_1(x|a+\delta a) = e^{ -0.5\omega(x - a - \delta a)^2 } = e^{ -0.5\omega(x - a)^2 + \omega(x-a)\delta a} = $$
+$$ = e^{ -0.5\omega(x - a)^2} e^{\omega(x-a)\delta a} = \psi_1(1 + \omega(x-a)\delta a ) = \psi_1 + \omega(x-a)\psi_1\delta a$$
+
+Получили, что первая вариация функции $\psi_1$ равна $\omega(x-a)\psi_1$. Аналогично, получим и значения первых вариаций остальных функций:
+$$\delta\psi_2 = -\omega(x+a)\psi_2\delta a$$
+$$\delta\psi_3 = ix\psi_3\delta a$$
+$$\delta\psi_4 = -ix\psi_4\delta a$$
+
+В общем виде:
+$$\psi_i = e^{f_i},\ \delta\psi_i = \frac{d f_i}{da}\psi_i\delta a$$
+
+Запишем стационарное уравнение Шредингера:
+$$\hat{H}\tilde{\psi}_m = E_m\tilde{\psi}_m$$
+
+Пусть собственные функции $\tilde{\psi}_m$ могут быть разложены по выбранному базису следующим образом:
+$$ \tilde{\psi}_m = \sum_{i=1}^4 \psi_i D_{im}$$
+
+Подставим разложение в стационарную задачу, умножим слева на $\psi_j^*$ и проинтегрируем. Получим:
+$$\sum_{i=1}^4 D_{im} \langle\psi_j|\hat{H}|\psi_i\rangle = \sum_{i=1}^4 E_mD_{im}\langle\psi_j|\psi_i\rangle$$
+
+Изучим поведение решения при замене параметра $a$ на $a + \delta a$ в базисных функциях:
+$$\sum_{i=1}^4 D_{im} \langle\psi_j + \delta\psi_j|\hat{H}|\psi_i + \delta\psi_i\rangle = \sum_{i=1}^4 E_mD_{im}\langle\psi_j + \delta\psi_j|\psi_i + \delta\psi_i\rangle$$
+$$\sum_{i=1}^4 D_{im} \left( \langle\psi_j|\hat{H}|\psi_i\rangle + \langle\delta\psi_j|\hat{H}|\psi_i\rangle + \langle\psi_j|\hat{H}|\delta\psi_i\rangle  \right) = $$
+$$ = \sum_{i=1}^4 E_mD_{im}\left( \langle\psi_j|\psi_i\rangle + \langle\delta\psi_j|\psi_i\rangle + \langle\psi_j|\delta\psi_i\rangle \right)$$
+
+$$\sum_{i=1}^4 D_{im} \left( \langle\psi_i|\hat{H}|\delta\psi_j\rangle^* + \langle\psi_j|\hat{H}|\delta\psi_i\rangle  \right) = %
+  \sum_{i=1}^4 E_mD_{im}\left( \langle\psi_i|\delta\psi_j\rangle^* + \langle\psi_j|\delta\psi_i\rangle \right)$$
+
+$$\sum_{i=1}^4 D_{im} \left( \langle\psi_i|\hat{H}\frac{d f_j}{da}|\psi_j\rangle^* + \langle\psi_j|\hat{H}\frac{d f_i}{da}|\psi_i\rangle  \right) = %
+  \sum_{i=1}^4 E_mD_{im}\left( \langle\psi_i|\frac{d f_j}{da}|\psi_j\rangle^* + \langle\psi_j|\frac{d f_i}{da}|\psi_i\rangle \right)$$
+
+$$\sum_{i=1}^4 D_{im} \left( \mathbb{A}_{ij}^* + \mathbb{A}_{ji}  \right) = %
+  \sum_{i=1}^4 E_mD_{im}\left( \mathbb{B}_{ij}^* + \mathbb{B}_{ji} \right)$$
+
+$$\sum_{i=1}^4 D_{im} \left( \mathbb{A}^{\dagger} + \mathbb{A} \right)_{ji} = %
+  \sum_{i=1}^4 E_mD_{im}\left( \mathbb{B}^{\dagger} + \mathbb{B} \right)_{ji}$$
+
+$$\left( \left( \mathbb{A}^{\dagger} + \mathbb{A} \right) \mathbb{D}  \right)_{jm} = E_m \left( \left( \mathbb{B}^{\dagger} + \mathbb{B} \right) \mathbb{D} \right)_{jm}$$
+$$\left( \mathbb{A}^{\dagger} + \mathbb{A} \right) \mathbb{D} = \mathbb{E} \left( \mathbb{B}^{\dagger} + \mathbb{B} \right) \mathbb{D}$$
+где $\mathbb{E}$ --- диагональная матрица.
+
+\end{document}
+\grid

@@ -1,0 +1,8 @@
+#gnuplot --persist -e 'plot "norm_energy.out" using 1:2 with line'
+gnuplot --persist -e 'plot "norm_energy.out" using 1:2 with line, "D_coeff.out" using 1:8 with line'
+gnuplot --persist -e 'plot "norm_energy.out" using 1:3 with line'
+gnuplot --persist -e 'plot "D_coeff.out" using 1:2 with line, "D_coeff.out" using 1:3 with line'
+gnuplot --persist -e 'plot "D_coeff.out" using 1:4 with line, "D_coeff.out" using 1:5 with line'
+gnuplot --persist -e 'plot "D_coeff.out" using 1:6 with line, "D_coeff.out" using 1:7 with line'
+#gnuplot --persist -e 'plot "D_coeff.out" using 1:8 with line, "D_coeff.out" using 1:9 with line'
+#gnuplot --persist -e 'plot "D_coeff.out" using 1:10 with line, "D_coeff.out" using 1:11 with line, "D_coeff.out" using 1:12 with line, "D_coeff.out" using 1:13 with line'

@@ -1,0 +1,14 @@
+13		! switch
+1.0D+4 1.0D-2   ! TMAX, TSTEP
+1.0D0		! omega
+1.0D0		! mass
+0.125D0		! grid area parameter
+7.0D0		! max coordinate
+1		! number of fotential energy grid points 
+2.0D0		! potential energy grid points 
+3.0D0
+5.0D0
+9.0D0
+13.0D0
+
+1.374D-3	! omega
