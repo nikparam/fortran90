@@ -13,7 +13,6 @@ CONTAINS
 		DOUBLE PRECISION :: a, b, p_0, q_0, q, p, V, E, func, corr
 
 		a = DSQRT(8.0D0 * DATAN(1.0D0) * factor / omega )
-		b = 2.0D0 * DSQRT( 2.0D0 * DATAN(1.0D0) * omega * factor )
 
 		q = ABS( q_lim )
 		q_0 = 0.0D0
@@ -22,11 +21,12 @@ CONTAINS
 
 		NumG = 0
 
-		DO 15 WHILE ( q_0 .LE. q )
+15		IF ( q_0 .LE. q ) THEN
 			p = DSQRT( 2.0D0 * m * V_lim(NumV) )
 			p_0 = 0.0D0
+			b = 2.0D0 * DSQRT( 2.0D0 * DATAN(1.0D0) * omega * factor )
 
-			DO 25 WHILE ( p_0 .LE. p )
+25			IF ( p_0 .LE. p ) THEN
 			
 				CALL potential_energy(q_0, params, V)
 				E = 0.5D0 * p_0**2 / m + V 
@@ -71,8 +71,15 @@ CONTAINS
 						END IF
 					END IF
 				END IF
-25			p_0 = p_0 + b
-15		q_0 = q_0 + a
+!				WRITE(*,*) q_0, p_0
+				p_0 = p_0 + b
+				b = b * 0.89
+				GOTO 25
+			END IF
+			q_0 = q_0 + a
+			a = a * 0.89
+			GOTO 15
+		END IF
 
 	END SUBROUTINE get_grid
 

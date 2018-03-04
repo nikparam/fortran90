@@ -53,8 +53,8 @@ SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, S, H, M1)
 	H(1:NEQ,1:NEQ) = SPREAD(X0(1:NEQ),1,NEQ) * S + SPREAD(X1(1:NEQ),1,NEQ) * M1 + &
 			 SPREAD(X2(1:NEQ),1,NEQ) * M2 + SPREAD(X3(1:NEQ),1,NEQ) * M3
 
-	WRITE(*,*) H
-	WRITE(*,*)
+!	WRITE(*,*) H
+!	WRITE(*,*)
 	RETURN
 
 END SUBROUTINE hamiltonian

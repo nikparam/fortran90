@@ -20,7 +20,7 @@ SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, S, H, M1)
 	M1 = B1 * S
 	M2 = B2 * S
 
-	npts = 100
+	npts = 48
 	ALLOCATE( x(npts), new_x(npts), wts(npts) )
 	CALL p_quadrature_rule(npts,x,wts)
 

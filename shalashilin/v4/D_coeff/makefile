@@ -7,7 +7,7 @@ main_pot_heller: ./source/main.f90 \
 		 ./source/coeff_matrix.f90  \
 		 ./source/change_var_mod.f90 \
 		 ./source/smatrix.f90 \
-		 ./source/hmatrix_num.f90 \
+		 ./source/hmatrix.f90 \
 		 ./source/sinvert.f90 \
 		 ./source/norm_energy.f90 \
 		 ./source/normalization.f90 \

@@ -9,7 +9,7 @@ set style arrow 2 nohead ls 2
 #########################################################################################
 
 set term x11 0
-set xrange [-5 : 5]
+#set xrange [-3 : 3]
 set autoscale y
 plot '../qp_init.out' every ::3 using 1:2
 
