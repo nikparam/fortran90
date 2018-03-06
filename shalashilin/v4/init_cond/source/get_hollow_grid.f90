@@ -10,9 +10,10 @@ CONTAINS
 		DOUBLE PRECISION, ALLOCATABLE, INTENT(OUT) :: q_array(:), p_array(:), omega_array(:)
 		INTEGER, INTENT(OUT) :: NumG
 		INTEGER :: astatus, i, j
-		DOUBLE PRECISION :: a, b, p_0, q_0, q, p, V, E, func, corr
+		DOUBLE PRECISION :: a, b, p_0, q_0, q, p, V, E, func, corr, divisor
 
 		a = DSQRT(8.0D0 * DATAN(1.0D0) * factor / omega )
+		divisor = 0.725
 
 		q = ABS( q_lim )
 		q_0 = 0.0D0
@@ -73,11 +74,11 @@ CONTAINS
 				END IF
 !				WRITE(*,*) q_0, p_0
 				p_0 = p_0 + b
-				b = b * 0.89
+				b = b * divisor
 				GOTO 25
 			END IF
 			q_0 = q_0 + a
-			a = a * 0.89
+			a = a * divisor
 			GOTO 15
 		END IF
 
