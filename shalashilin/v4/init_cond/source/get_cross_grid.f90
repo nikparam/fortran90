@@ -10,10 +10,9 @@ CONTAINS
 		DOUBLE PRECISION, ALLOCATABLE, INTENT(OUT) :: q_array(:), p_array(:), omega_array(:)
 		INTEGER, INTENT(OUT) :: NumG
 		INTEGER :: astatus, i, j
-		DOUBLE PRECISION :: a, b, p_0, q_0, q, p, V, E, func, corr, divisor
+		DOUBLE PRECISION :: a, b, p_0, q_0, q, p, V, E, func, corr, divisor_a, divisor_b
 
 		a = DSQRT(8.0D0 * DATAN(1.0D0) * factor / omega )
-		divisor = 1
 
 		q = ABS( q_lim )
 		q_0 = 0.0D0
@@ -22,30 +21,31 @@ CONTAINS
 
 		NumG = 0
 
-15		IF ( q_0 .LE. q ) THEN
-			p = DSQRT( 2.0D0 * m * V_lim(NumV) )
-			p_0 = 0.0D0
-			b = 2.0D0 * DSQRT( 2.0D0 * DATAN(1.0D0) * omega * factor )
+15		IF ( q_0 .LT. q ) THEN
+			divisor_a = 1.0
 
-25			IF ( p_0 .LE. p ) THEN
+			p = DSQRT( 2.0D0 * m * V_lim(NumV) )
+			b = 2.0D0 * DSQRT( 2.0D0 * DATAN(1.0D0) * omega * factor )
+			p_0 = 0.0D0 
+
+			WRITE(*,*) a, " : "
+
+25			IF ( p_0 .LT. p ) THEN
+				divisor_b = 1.0
 			
 				CALL potential_energy(q_0, params, V)
 				E = 0.5D0 * p_0**2 / m + V 
-				refE = 0.5D0 * ( p_0 + b )**2 / m + V 
 
 				func = 1.0D0
-				ref = 1.0D0
 				DO k = 1, NumV
 					func = func * ( E - V_lim(k) )
-					ref  = ref * ( refE - V_lim(k) )
 				END DO
+				WRITE(*,*) "-->" , b, " => ", q_0, p_0, E
 
-				IF ( func .LE. 0.0D0 .AND. E /= 0.0 ) THEN
-!					IF ( ref .GE. 0.0D0 ) THEN
-!					IF ( ref .GE. 0.0D0 .OR. p_0 .EQ. 0.0D0 ) THEN
-!					IF ( ref .GE. 0.0D0 .OR. q_0 .EQ. 0.0D0 ) THEN
-!					IF ( p_0 .EQ. 0.0D0 .OR. q_0 .EQ. 0.0D0 ) THEN
-					IF ( ref .GE. 0.0D0 .OR. p_0 .EQ. 0.0D0 .OR. q_0 .EQ. 0.0D0 ) THEN
+				IF ( func .LE. 0.0D0 .AND. ( p_0 .EQ. 0.0D0 .OR. q_0 .EQ. 0.0D0 ) ) THEN
+					divisor_b = 0.95
+					IF ( E /= 0.0 ) THEN
+						divisor_a = .95
 						IF (q_0 .EQ. 0.0D0) THEN
 							DO i = 1, 2
 								CALL append(q_array, q_0)
@@ -72,13 +72,12 @@ CONTAINS
 						END IF
 					END IF
 				END IF
-!				WRITE(*,*) q_0, p_0
 				p_0 = p_0 + b
-				b = b * divisor
+				b = b * divisor_b
 				GOTO 25
 			END IF
 			q_0 = q_0 + a
-			a = a * divisor
+			a = a * divisor_a
 			GOTO 15
 		END IF
 
