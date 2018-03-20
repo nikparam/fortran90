@@ -2,12 +2,10 @@
 1.0D+4 1.0D-2   ! TMAX, TSTEP
 1.0D0		! omega
 1.0D0		! mass
-0.125D0		! grid area parameter
-4.25D0		! max coordinate
-5		! number of fotential energy grid points 
-2.0D0		! potential energy grid points 
-3.0D0
-5.0D0
-6.0D0
-10.0D0
+0.0625D0		! grid area parameter
+2.0D0		! max coordinate
+3		! number of potential energy grid points 
+0.1D0		! potential energy grid points 
+1.0D0
+2.0D0
 

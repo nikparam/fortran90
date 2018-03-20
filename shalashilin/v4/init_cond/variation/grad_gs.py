@@ -13,61 +13,79 @@ switch = 13
 params = fs.read_params( switch, '../../potential/params.txt' )
 
 
-A = 0.88622693
+A = np.linspace( 0.2, 2.0, 25 )
 NumG = 4
 
-D = [ -0.0 - 0.517722 * 1j, \
-       0.0 + 0.517722 * 1j, \
-       0.517722 + 0.0 * 1j, \
-      -0.517722 - 0.0 * 1j  ]
+#D = [ -0.0 - 0.517722 * 1j, \
+#       0.0 + 0.517722 * 1j, \
+#       0.517722 + 0.0 * 1j, \
+#      -0.517722 - 0.0 * 1j  ]
 
+D = [ 1.0, 1.0, 1.0, 1.0 ]
 
 omega = [1]*NumG
 phase = lmap( lambda x: 0.25 * np.log( x / np.pi ), omega )
 
-a = 0.1 * A
-b = 2 * A 
-phi = 0.5 * ( 1 + np.sqrt(5) )
+#a = 0.1 * A
+#b = 2 * A 
+#phi = 0.5 * ( 1 + np.sqrt(5) )
+#
+#delta = abs( b - a )
 
-delta = abs( b - a )
+#print(A)
 
-print(A)
+for a in A:
+	q = [ 0.0, 0.0, -a, a ]
+	p = [ -a, a, 0.0, 0.0 ]
 
-eps = 1.0e-8
-while ( delta > eps ):
+	xi, eta = fs.change_var( q, p, omega, phase )
+	overlap = fs.overlap( xi, eta, omega )
 
-	p = ( b - a ) / phi
-	x1 = b - p
-	x2 = a + p
+	N =  np.dot( np.conj(D), np.dot( overlap, D) )
+	D /= np.sqrt(N)
+#	print(D)
 
-	q1 = [ 0.0, 0.0, -x1, x1 ]
-	p1 = [ -x1, x1, 0.0, 0.0 ]
-
-	xi1, eta1 = fs.change_var( q1, p1, omega, phase )
-	overlap1 = fs.overlap( xi1, eta1, omega )
-	hamiltonian1, dummy = fs.hamiltonian( xi1, eta1, omega, params, overlap1 )
+	hamiltonian, dummy = fs.hamiltonian( xi, eta, omega, params, overlap )
 	
-	E1 =  np.dot( np.conj(D), np.dot( hamiltonian1, D) )
+	E =  np.dot( np.conj(D), np.dot( hamiltonian, D) )
 
-	q2 = [ 0.0, 0.0, -x2, x2 ]
-	p2 = [ -x2, x2, 0.0, 0.0 ]
+	print( a, E.real )
 
-	xi2, eta2 = fs.change_var( q2, p2, omega, phase )
-	overlap2 = fs.overlap( xi2, eta2, omega )
-	hamiltonian2, dummy = fs.hamiltonian( xi2, eta2, omega, params, overlap2 )
-	
-	E2 =  np.dot( np.conj(D), np.dot( hamiltonian2, D) )
-
-	print(x1, E1.real, x2, E2.real)
-
-	if ( E1 > E2 ):
-		a = x1
-	else:
-		b = x2
-
-	delta = abs( b - a )
-
-#	print( '{0:g}\t{1:g}\t{2:g}\t{3:g}'.format(E.real, delta, dE / step, step) )
-
-print()
-print( 0.5 * (a+b) )
+#eps = 1.0e-8
+#while ( delta > eps ):
+#
+#	p = ( b - a ) / phi
+#	x1 = b - p
+#	x2 = a + p
+#
+#	q1 = [ 0.0, 0.0, -x1, x1 ]
+#	p1 = [ -x1, x1, 0.0, 0.0 ]
+#
+#	xi1, eta1 = fs.change_var( q1, p1, omega, phase )
+#	overlap1 = fs.overlap( xi1, eta1, omega )
+#	hamiltonian1, dummy = fs.hamiltonian( xi1, eta1, omega, params, overlap1 )
+#	
+#	E1 =  np.dot( np.conj(D), np.dot( hamiltonian1, D) )
+#
+#	q2 = [ 0.0, 0.0, -x2, x2 ]
+#	p2 = [ -x2, x2, 0.0, 0.0 ]
+#
+#	xi2, eta2 = fs.change_var( q2, p2, omega, phase )
+#	overlap2 = fs.overlap( xi2, eta2, omega )
+#	hamiltonian2, dummy = fs.hamiltonian( xi2, eta2, omega, params, overlap2 )
+#	
+#	E2 =  np.dot( np.conj(D), np.dot( hamiltonian2, D) )
+#
+#	print(x1, E1.real, x2, E2.real)
+#
+#	if ( E1 > E2 ):
+#		a = x1
+#	else:
+#		b = x2
+#
+#	delta = abs( b - a )
+#
+##	print( '{0:g}\t{1:g}\t{2:g}\t{3:g}'.format(E.real, delta, dE / step, step) )
+#
+#print()
+#print( 0.5 * (a+b) )

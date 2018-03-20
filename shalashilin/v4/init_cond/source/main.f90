@@ -91,6 +91,35 @@ PROGRAM main
 
 	CLOSE(UNIT = 20)
 
+	sname = 'format_output.out'
+	INQUIRE(FILE = sname, EXIST = exists_s)
+	IF ( exists_s ) THEN
+		OPEN(UNIT = 20, FILE = sname, FORM = 'FORMATTED', &
+		     STATUS = 'OLD', ACTION = 'WRITE')
+		CLOSE(UNIT = 20, STATUS = 'DELETE')
+	END IF
+
+	OPEN(UNIT = 20, FILE = sname, FORM = 'FORMATTED', &
+	     STATUS = 'NEW', POSITION = 'APPEND', ACTION = 'WRITE')
+
+	WRITE(20,*) "	q		p		E"
+	DO i = 1, NumG
+		CALL potential_energy( q_array(i), params, V_junk )
+		WRITE(20,'(F14.6," ",F14.6," ",F14.6)') q_array(i), p_array(i), 0.5D0 * p_array(i)**2 / m + V_junk
+	END DO
+
+	WRITE(20,*)
+
+	DO i = 1, NumG
+		WRITE(20,*) "--------------------------------------"
+		WRITE(20,'("Energy[ ",I2.2," ]=",F14.6)') i, DBLE( eigen_states(i) )
+		WRITE(20,*) "--------------------------------------"
+		DO j = 1, NumG
+			WRITE(20,'("D[",I2.2,",",I2.2,"]=",F14.6,SP,F14.6,"i")') j, i, eigen_vectors(j,i)
+		END DO
+		WRITE(20,*)
+	END DO
+
 	ename = 'energy_states.out'
 	INQUIRE(FILE = ename, EXIST = exists_e)
 	IF ( exists_e ) THEN

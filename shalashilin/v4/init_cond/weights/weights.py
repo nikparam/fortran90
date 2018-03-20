@@ -17,7 +17,7 @@ g = lambda a, x: a + x
 
 lmap = compose( list, map )
 
-with open( '../eigen_vectors.out', 'r' ) as fin:
+with open( '../old/1cond/eigen_vectors.out', 'r' ) as fin:
 	NumStates = int( fin.readline().split()[0] )
 	energy = list( map( floatify, fin.readline().split() ) )
 	eigen_vectors = []
@@ -27,7 +27,7 @@ with open( '../eigen_vectors.out', 'r' ) as fin:
 
 eigen_vectors = np.transpose( eigen_vectors )
 
-with open( '../qp_init.out', 'r' ) as fin:
+with open( '../old/1cond/qp_init.out', 'r' ) as fin:
 	q = []
 	p = []
 	for _ in range(3):

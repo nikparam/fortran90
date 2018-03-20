@@ -21,7 +21,11 @@ SUBROUTINE get_states(NumG, omega, phase, params, q, p, eigen_states, eigen_vect
 	ok = 0
 	CALL ZGEEV('N', 'V', NumG, S, NumG, s_eigen, DUMMY, 1, TR, NumG, WORK, 2*NumG, RWORK, 2*NumG, ok)
 
-20	FORMAT(F16.8,' ', F16.8)
+20	FORMAT(100(F16.8,' ', F16.8))
+
+!	DO i = 1, NumG
+!		write(*,20) TR(i,:)
+!	END DO
 
 	S_mhalf(1:NumG,1:NumG) = (0.0D0, 0.0D0)
 	DO i = 1, NumG
