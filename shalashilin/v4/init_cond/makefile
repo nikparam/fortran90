@@ -1,7 +1,7 @@
 F = gfortran 
 
 DIR = ./old
-FILES = *.o *.mod *.out
+FILES = *.o *.mod *.out *.tmp
 EXEC = ./main
 
 LD_FLAGS = -L/usr/lib/ -lblas -L/usr/lib/ -llapack 
