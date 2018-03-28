@@ -23,9 +23,13 @@ SUBROUTINE get_states(NumG, omega, phase, params, q, p, eigen_states, eigen_vect
 
 20	FORMAT(100(F16.8,' ', F16.8))
 
-!	DO i = 1, NumG
-!		write(*,20) TR(i,:)
-!	END DO
+	DO i = 1, NumG
+		WRITE(*,*) '___________________________________________'
+		DO j = 1, NumG
+			WRITE(*,'("U[",I2.2,",",I2.2,"]= ",F14.6,SP,F14.6,"i")') j, i, TR(j,i)
+		END DO
+		WRITE(*,*)
+	END DO
 
 	S_mhalf(1:NumG,1:NumG) = (0.0D0, 0.0D0)
 	DO i = 1, NumG

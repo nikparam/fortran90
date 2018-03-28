@@ -4,7 +4,7 @@
 1.0D0		! mass
 0.0625D0		! grid area parameter
 2.0D0		! max coordinate
-3		! number of potential energy grid points 
+1		! number of potential energy grid points 
 0.1D0		! potential energy grid points 
 1.0D0
 2.0D0
