@@ -13,7 +13,7 @@ CONTAINS
 		DOUBLE PRECISION :: a, b, p_0, q_0, q, p, V, E, func, corr, divisor_a, divisor_b
 
 !		a = DSQRT(8.0D0 * DATAN(1.0D0) * factor / omega )
-		a = 0.25 * omega
+		a = 0.20 * omega
 		q = ABS( q_lim )
 		q_0 = 0.0D0
 
@@ -26,10 +26,10 @@ CONTAINS
 
 			p = DSQRT( 2.0D0 * m * V_lim(NumV) )
 !			b = 2.0D0 * DSQRT( 2.0D0 * DATAN(1.0D0) * omega * factor )
-			b = 0.25 * omega
+			b = 0.20 * omega
 			p_0 = 0.0D0 
 
-			WRITE(*,*) a, " : "
+!			WRITE(*,*) a, " : "
 
 25			IF ( p_0 .LT. p ) THEN
 				divisor_b = 1.0
@@ -41,7 +41,7 @@ CONTAINS
 				DO k = 1, NumV
 					func = func * ( E - V_lim(k) )
 				END DO
-				WRITE(*,*) "-->" , b, " => ", q_0, p_0, E
+!				WRITE(*,*) "-->" , b, " => ", q_0, p_0, E
 
 				IF ( func .LE. 0.0D0 .AND. ( p_0 .EQ. 0.0D0 .OR. q_0 .EQ. 0.0D0 ) ) THEN
 					divisor_b = 1.0

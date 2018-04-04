@@ -3,7 +3,7 @@ PROGRAM main
 	USE GRID
 
 	INTEGER :: switch, NumV, NumG, astatus
-	DOUBLE PRECISION :: params(15), omega, m, factor, q_lim, TMAX, TSTEP, V_junk
+	DOUBLE PRECISION :: params(15), omega, m, factor, q_lim, TMAX, TSTEP, V_junk, N, E
 	DOUBLE PRECISION, ALLOCATABLE :: V_lim(:), q_array(:), p_array(:), omega_array(:), phase_array(:)
 	DOUBLE COMPLEX, ALLOCATABLE :: eigen_states(:), eigen_vectors(:,:)
 	CHARACTER :: file_params*40
@@ -111,9 +111,10 @@ PROGRAM main
 	WRITE(20,*)
 
 	DO i = 1, NumG
-		WRITE(20,*) "--------------------------------------"
-		WRITE(20,'("Energy[ ",I2.2," ]=",F14.6)') i, DBLE( eigen_states(i) )
-		WRITE(20,*) "--------------------------------------"
+		CALL norm_energy( NumG, q_array, p_array, eigen_vectors(:,i), N, E, omega_array, params, phase_array )
+		WRITE(20,*) "------------------------------------------------------------------------"
+		WRITE(20,'("Energy[ ",I2.2," ]=",F14.6," and ",F14.6", Norm = ",F14.6)') i, DBLE( eigen_states(i) ), E, N
+		WRITE(20,*) "-------------------------------------------------------------------------"
 		DO j = 1, NumG
 			WRITE(20,'("D[",I2.2,",",I2.2,"]=",F14.6,SP,F14.6,"i")') j, i, eigen_vectors(j,i)
 		END DO

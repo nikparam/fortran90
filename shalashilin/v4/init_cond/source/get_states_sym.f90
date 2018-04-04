@@ -1,6 +1,7 @@
 SUBROUTINE get_states(NumG, omega, phase, params, q, p, eigen_states, eigen_vectors)
 
 	DOUBLE PRECISION, INTENT(IN) :: q(NumG), p(NumG), omega(NumG), params(15)
+	DOUBLE PRECISION :: V_junk
 	DOUBLE COMPLEX, INTENT(OUT) :: eigen_states(NumG)
 	DOUBLE COMPLEX, INTENT(OUT) :: eigen_vectors(NumG, NumG)
 
@@ -12,6 +13,8 @@ SUBROUTINE get_states(NumG, omega, phase, params, q, p, eigen_states, eigen_vect
 			  WORK(2*NumG), H_prime(NumG,NumG), H_dprime(NumG,NumG), &
 			  U_prime(NumG,NumG), DUMMY, TEMP(1:NumG,1:NumG)
 
+	CHARACTER :: fname*40
+	LOGICAL :: exists_s
 
 	CALL change_var(NumG, q, p, ksi, eta, omega, phase)
 	CALL overlap(NumG, ksi, eta, omega, S)
@@ -23,12 +26,31 @@ SUBROUTINE get_states(NumG, omega, phase, params, q, p, eigen_states, eigen_vect
 
 20	FORMAT(100(F16.8,' ', F16.8))
 
+	fname = 'lowdin.out'
+	INQUIRE(FILE = fname, EXIST = exists_s)
+	IF ( exists_s ) THEN
+		OPEN(UNIT = 20, FILE = fname, FORM = 'FORMATTED', &
+		     STATUS = 'OLD', ACTION = 'WRITE')
+		CLOSE(UNIT = 20, STATUS = 'DELETE')
+	END IF
+
+	OPEN(UNIT = 20, FILE = fname, FORM = 'FORMATTED', &
+	     STATUS = 'NEW', POSITION = 'APPEND', ACTION = 'WRITE')
+
+	WRITE(20,*) "	q		p		E"
 	DO i = 1, NumG
-		WRITE(*,*) '___________________________________________'
+		CALL potential_energy( q(i), params, V_junk )
+		WRITE(20,'(F14.6," ",F14.6," ",F14.6)') q(i), p(i), 0.5D0 * p(i)**2 / m + V_junk
+	END DO
+
+	WRITE(20,*)
+
+	DO i = 1, NumG
+		WRITE(20,*) '___________________________________________'
 		DO j = 1, NumG
-			WRITE(*,'("U[",I2.2,",",I2.2,"]= ",F14.6,SP,F14.6,"i")') j, i, TR(j,i)
+			WRITE(20,'("U[",I2.2,",",I2.2,"]= ",F14.6,SP,F14.6,"i")') j, i, TR(j,i)
 		END DO
-		WRITE(*,*)
+		WRITE(20,*)
 	END DO
 
 	S_mhalf(1:NumG,1:NumG) = (0.0D0, 0.0D0)

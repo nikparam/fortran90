@@ -35,33 +35,59 @@ def num_zeroes( func, x_array ):
 
 	return count
 
-
 lmap = compose( list, map )
 
 switch = 13
-params = fs.read_params( switch, '../../potential/params.txt' )
+params = fs.read_params( switch, '../potential/params.txt' )
 
 
-A = 0.9
+A = 1.6
 NumG = 8
-
-#D = [ 4.86761400 - 12.14180620 * 1j, \
-#      14.45370904 - 31.39053856 * 1j, \
-#      -0.03538665 + 26.55952747 * 1j, \
-#      -19.28601170 + 16.97285778 * 1j ]
-
-#D = [  23.29077405 - 104.08655773 * 1j, \
-#      -23.00668126 + 104.13895337 * 1j, \
-#       89.79251688 + 30.71022183 * 1j, \
-#      -90.07539352 - 30.76206115 * 1j ]
 
 #D = [ 1, 1, 1, 1, 1j, 1j, 1j, 1j ]
 #D = [ -1j, 1j, 1, -1 ]
 #D = [ 1, 1, -1, -1 ]
 #D = [ -1j, 1j, -1, 1 ]
 
-q = [ 0.0, 0.0, -A, A, -0.5 * A, -0.5 * A, 0.5 * A, 0.5 * A ]
-p = [ -A, A, 0.0, 0.0, -0.5 * A, 0.5 * A, -0.5 * A, 0.5 * A ]
+#D = [ -0.754619,
+#      -0.754619, 
+#       1.416881,
+#       1.416881,
+#      -0.754619,
+#      -0.754619,
+#       1.416881,
+#       1.416881 ]
+
+#D = [  11.935808 * 1j, 
+#      -11.935808 * 1j,
+#       -2.801350 * 1j,
+#        2.801350 * 1j,
+#      -11.935809, 
+#       11.935809,
+#        2.801350,
+#       -2.801350]
+
+#D = [  206.770970, 
+#       206.770981,
+#        -6.066178,
+#        -6.066178,
+#      -206.770975, 
+#      -206.770976,
+#         6.066178,
+#         6.066178]
+
+
+D = [ 3868.705418, 
+     -3868.705417,
+       -14.187348,
+        14.187348,
+      -3868.705417 * 1j, 
+       3868.705417 * 1j,
+         14.187348 * 1j,
+        -14.187348 * 1j ]
+
+q = [ 0.0, 0.0, 0.0, 0.0, -0.2, 0.2, -A, A ]
+p = [ -0.2, 0.2, -A, A, 0.0, 0.0, 0.0, 0.0 ]
 
 omega = [1]*NumG
 phase = lmap( lambda x: 0.25 * np.log( x / np.pi ), omega )
@@ -90,14 +116,16 @@ ax1.plot( x, lmap( abs_full_psi, x ) )
 
 eps = 1.0e-8
 
-E_exact = 2.5
+E_exact = 7.5
 E0 = 2 * eps
 delta = 2 * eps
-step = -0.01
+delta_a = 2 * eps
+step = 0.01
 
 der_E = 2 * eps
 
-while ( abs( delta ) > eps ):
+#while ( abs( delta_a ) > eps ):
+for i in range(25):
 	xi, eta = fs.change_var( q, p, omega, phase )
 	overlap = fs.overlap( xi, eta, omega )
 	D = normalization( q, p, D, omega, phase )
@@ -107,22 +135,19 @@ while ( abs( delta ) > eps ):
 
 	delta = E.real - E0.real
 	delta_a = E.real - E_exact
-	der_E = delta / step
+	der_E = delta_a / step
 
 	print( 'zeroes = {0:g}\tA = {1:g}\tE = {2:g}\tstep = {3:g}\tE-E_ex = {4:g}\tdE = {5:g}\tE\' = {6:g}'\
 		.format( NumZ, A, E.real, step, delta_a, delta, der_E ) )
 
 	tempNumZ = num_zeroes( abs_full_psi, x )
-	if ( tempNumZ != NumZ ):
-		step *= -0.1 
-	else:
-		step *= 1 
+	if ( der_E > 0.0 ): step *= -0.5 
 
 	E0 = E
 	A += step
 
-	q = [ 0.0, 0.0, -A, A, -0.5 * A, -0.5 * A, 0.5 * A, 0.5 * A ]
-	p = [ -A, A, 0.0, 0.0, -0.5 * A, 0.5 * A, -0.5 * A, 0.5 * A ]
+	q = [ 0.0, 0.0, 0.0, 0.0, -0.2, 0.2, -A, A ]
+	p = [ -0.2, 0.2, -A, A, 0.0, 0.0, 0.0, 0.0 ]
 	mapped_psi = lmap( lambda c, q0, p0, o, p: partial( psi, c, q0, p0, o, p ), \
 			   					 D, q, p, omega, phase )
 	full_psi = lambda x: reduce( lambda a, f: a + f(x), mapped_psi[1:], mapped_psi[0](x) )
