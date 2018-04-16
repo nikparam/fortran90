@@ -12,8 +12,10 @@ CONTAINS
 		INTEGER :: astatus, i, j
 		DOUBLE PRECISION :: a, b, p_0, q_0, q, p, V, E, func, corr, divisor_a, divisor_b
 
-!		a = DSQRT(8.0D0 * DATAN(1.0D0) * factor / omega )
-		a = 0.20 * omega
+		a = DSQRT(8.0D0 * DATAN(1.0D0) * factor / omega )
+		b = 2.0D0 * DSQRT( 2.0D0 * DATAN(1.0D0) * omega * factor )
+		WRITE(*,*) a, b
+!		a = 0.20 /  DSQRT( omega )
 		q = ABS( q_lim )
 		q_0 = 0.0D0
 
@@ -25,8 +27,8 @@ CONTAINS
 			divisor_a = 1.0
 
 			p = DSQRT( 2.0D0 * m * V_lim(NumV) )
-!			b = 2.0D0 * DSQRT( 2.0D0 * DATAN(1.0D0) * omega * factor )
-			b = 0.20 * omega
+			b = 2.0D0 * DSQRT( 2.0D0 * DATAN(1.0D0) * omega * factor )
+!			b = 0.20 * DSQRT( omega )
 			p_0 = 0.0D0 
 
 !			WRITE(*,*) a, " : "
@@ -43,7 +45,7 @@ CONTAINS
 				END DO
 !				WRITE(*,*) "-->" , b, " => ", q_0, p_0, E
 
-				IF ( func .LE. 0.0D0 .AND. ( p_0 .EQ. 0.0D0 .OR. q_0 .EQ. 0.0D0 ) ) THEN
+				IF ( func .LT. 0.0D0 .AND. ( p_0 .EQ. 0.0D0 .OR. q_0 .EQ. 0.0D0 ) ) THEN
 					divisor_b = 1.0
 					IF ( E /= 0.0 ) THEN
 						divisor_a = 1.0

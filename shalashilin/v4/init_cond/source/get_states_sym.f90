@@ -79,9 +79,4 @@ SUBROUTINE get_states(NumG, omega, phase, params, q, p, eigen_states, eigen_vect
 
 	eigen_vectors = MATMUL( TR, MATMUL( S_mhalf, U_prime ) )
 
-!	TEMP = MATMUL( TRANSPOSE( CONJG(eigen_vectors) ), MATMUL(TEMP, eigen_vectors) )
-!	DO i = 1, NumG
-!		WRITE(*,*) TEMP(i,:)
-!	END DO
-
 END SUBROUTINE get_states

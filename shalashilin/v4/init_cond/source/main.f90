@@ -75,13 +75,8 @@ PROGRAM main
 	     STATUS = 'NEW', POSITION = 'APPEND', ACTION = 'WRITE')
 
 	WRITE(20,'(I2.2)') NumG
-!	WRITE(20,'(F6.4)') omega
 
 	WRITE(20,'(100F12.8)') DBLE(eigen_states)
-
-!	DO i = 1, NumG
-!		CALL  normalize( NumG, eigen_vectors(:,i), q_array, p_array, omega_array, phase_array )
-!	END DO
 
 	DO i = 1, NumG
 		WRITE(20,55) eigen_vectors(i,:)

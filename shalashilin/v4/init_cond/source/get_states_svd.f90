@@ -21,6 +21,14 @@ SUBROUTINE get_states(NumG, omega, phase, params, q, p, eigen_states, eigen_vect
 
 	CALL hamiltonian(NumG, ksi, eta, omega, params, S, H, M1)
 
+!	DO i = 1, NumG
+!		WRITE(*,20) M1(i,:)
+!	END DO
+!	WRITE(*,*)
+!	DO i = 1, NumG
+!		WRITE(*,20) H(i,:)
+!	END DO
+20 	FORMAT( 100("( ",F14.6,SP,F14.6,"i ) ") )
 	CALL inverse(NumG, S, SI)
 
 	H_prime = MATMUL( SI, H )

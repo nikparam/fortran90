@@ -28,42 +28,45 @@ all: clean cg_sym cg_svd cg_chl
 	@mv *.out $(DIR_chl)
 
 cg_sym: ./source/add_to_list.f90 \
-        ./source/get_cross_grid.f90 \
+        ./source/get_grid.f90 \
         ./source/get_states_sym.f90 \
+        ./source/hmatrix_legendre.f90 \
+        ./source/norm_energy.f90 \
         ./source/main.f90  \
         ../potential/pot_der.f90 \
         ../D_coeff/source/smatrix.f90 \
-        ../D_coeff/source/hmatrix.f90 \
         ../D_coeff/source/change_var_mod.f90 \
         ../D_coeff/source/normalization.f90 \
-        ../D_coeff/source/norm_energy.f90 \
+	../../../legendre_polynomials/legendre_polynomial.f90
 
 	@$(F)$ $^ $(LD_FLAGS) -o $(EXEC_sym)
 
 cg_svd: ./source/add_to_list.f90 \
         ./source/get_cross_grid.f90 \
         ./source/get_states_svd.f90 \
+        ./source/hmatrix_legendre.f90 \
+        ./source/norm_energy.f90 \
         ./source/main.f90  \
         ../potential/pot_der.f90 \
         ../D_coeff/source/smatrix.f90 \
-        ../D_coeff/source/hmatrix.f90 \
         ../D_coeff/source/change_var_mod.f90 \
         ../D_coeff/source/normalization.f90 \
-        ../D_coeff/source/norm_energy.f90 \
-        ../D_coeff/source/sinvert.f90
+        ../D_coeff/source/sinvert.f90 \
+	../../../legendre_polynomials/legendre_polynomial.f90
 
 	@$(F)$ $^ $(LD_FLAGS) -o $(EXEC_svd)
 
 cg_chl: ./source/add_to_list.f90 \
         ./source/get_cross_grid.f90 \
         ./source/get_states_chl.f90 \
+        ./source/hmatrix_legendre.f90 \
+        ./source/norm_energy.f90 \
         ./source/main.f90  \
         ../potential/pot_der.f90 \
         ../D_coeff/source/smatrix.f90 \
-        ../D_coeff/source/hmatrix.f90 \
         ../D_coeff/source/change_var_mod.f90 \
         ../D_coeff/source/normalization.f90 \
-        ../D_coeff/source/norm_energy.f90 \
+	../../../legendre_polynomials/legendre_polynomial.f90
 
 	@$(F)$ $^ $(LD_FLAGS) -o $(EXEC_chl)
 

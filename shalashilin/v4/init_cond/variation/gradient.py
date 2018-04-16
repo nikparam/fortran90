@@ -38,7 +38,7 @@ def num_zeroes( func, x_array ):
 lmap = compose( list, map )
 
 switch = 13
-params = fs.read_params( switch, '../potential/params.txt' )
+params = fs.read_params( switch, '../../potential/params.txt' )
 
 
 A = 1.6
@@ -125,8 +125,9 @@ step = 0.01
 der_E = 2 * eps
 
 #while ( abs( delta_a ) > eps ):
-for i in range(25):
+for i in range(1):
 	xi, eta = fs.change_var( q, p, omega, phase )
+	print(eta)
 	overlap = fs.overlap( xi, eta, omega )
 	D = normalization( q, p, D, omega, phase )
 
@@ -137,8 +138,8 @@ for i in range(25):
 	delta_a = E.real - E_exact
 	der_E = delta_a / step
 
-	print( 'zeroes = {0:g}\tA = {1:g}\tE = {2:g}\tstep = {3:g}\tE-E_ex = {4:g}\tdE = {5:g}\tE\' = {6:g}'\
-		.format( NumZ, A, E.real, step, delta_a, delta, der_E ) )
+#	print( 'zeroes = {0:g}\tA = {1:g}\tE = {2:g}\tstep = {3:g}\tE-E_ex = {4:g}\tdE = {5:g}\tE\' = {6:g}'\
+#		.format( NumZ, A, E.real, step, delta_a, delta, der_E ) )
 
 	tempNumZ = num_zeroes( abs_full_psi, x )
 	if ( der_E > 0.0 ): step *= -0.5 
@@ -164,7 +165,7 @@ for i in range( NumG ):
 ax2.text( -0.8, -0.05, r'$\Re\psi$', fontsize = 20 )
 ax3.text( -0.8, -0.035, r'$\Im\psi$', fontsize = 20 )
 
-print('\n{0:g}'.format(A))
-print(D)
-print(q,p)
+#print('\n{0:g}'.format(A))
+#print(D)
+#print(q,p)
 plt.show()
