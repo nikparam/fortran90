@@ -6,13 +6,30 @@ DIR_svd = ./old/svd
 DIR_chl = ./old/chl
 FILES = *.o *.mod *.out *.tmp
 EXEC = ./main*
-EXEC_sym = ./main_sym
+EXEC_sym = ./main_lowdin
 EXEC_svd = ./main_svd
 EXEC_chl = ./main_chl
 
+SOURCE = ./source/add_to_list.f90 \
+         ./source/get_cross_grid.f90 \
+         ./source/norm_energy.f90 \
+         ./source/main.f90  \
+         ../potential/pot_der.f90 \
+         ../D_coeff/source/smatrix.f90 \
+         ../D_coeff/source/change_var_mod.f90 \
+         ../D_coeff/source/normalization.f90 
+
+
+legendre = ./source/hmatrix_legendre.f90 \
+ 	   ../../../legendre_polynomials/legendre_polynomial.f90
+
+lowdin = ./source/get_states_sym.f90 
+svd = ./source/get_states_svd.f90 
+chl = ./source/get_states_chl.f90 
+
 LD_FLAGS = -L/usr/lib/ -lblas -L/usr/lib/ -llapack 
 
-all: clean cg_sym cg_svd cg_chl
+all: clean cg_low cg_svd cg_chl
 
 	@mkdir $(DIR)
 	@$(EXEC_sym) 
@@ -27,46 +44,15 @@ all: clean cg_sym cg_svd cg_chl
 	@mkdir $(DIR_chl)
 	@mv *.out $(DIR_chl)
 
-cg_sym: ./source/add_to_list.f90 \
-        ./source/get_grid.f90 \
-        ./source/get_states_sym.f90 \
-        ./source/hmatrix_legendre.f90 \
-        ./source/norm_energy.f90 \
-        ./source/main.f90  \
-        ../potential/pot_der.f90 \
-        ../D_coeff/source/smatrix.f90 \
-        ../D_coeff/source/change_var_mod.f90 \
-        ../D_coeff/source/normalization.f90 \
-	../../../legendre_polynomials/legendre_polynomial.f90
+cg_low: $(SOURCE) $(legendre) $(lowdin)
 
 	@$(F)$ $^ $(LD_FLAGS) -o $(EXEC_sym)
 
-cg_svd: ./source/add_to_list.f90 \
-        ./source/get_cross_grid.f90 \
-        ./source/get_states_svd.f90 \
-        ./source/hmatrix_legendre.f90 \
-        ./source/norm_energy.f90 \
-        ./source/main.f90  \
-        ../potential/pot_der.f90 \
-        ../D_coeff/source/smatrix.f90 \
-        ../D_coeff/source/change_var_mod.f90 \
-        ../D_coeff/source/normalization.f90 \
-        ../D_coeff/source/sinvert.f90 \
-	../../../legendre_polynomials/legendre_polynomial.f90
+cg_svd: $(SOURCE) $(legendre) $(svd)	
 
 	@$(F)$ $^ $(LD_FLAGS) -o $(EXEC_svd)
 
-cg_chl: ./source/add_to_list.f90 \
-        ./source/get_cross_grid.f90 \
-        ./source/get_states_chl.f90 \
-        ./source/hmatrix_legendre.f90 \
-        ./source/norm_energy.f90 \
-        ./source/main.f90  \
-        ../potential/pot_der.f90 \
-        ../D_coeff/source/smatrix.f90 \
-        ../D_coeff/source/change_var_mod.f90 \
-        ../D_coeff/source/normalization.f90 \
-	../../../legendre_polynomials/legendre_polynomial.f90
+cg_chl:	$(SOURCE) $(legendre) $(chl)	
 
 	@$(F)$ $^ $(LD_FLAGS) -o $(EXEC_chl)
 
