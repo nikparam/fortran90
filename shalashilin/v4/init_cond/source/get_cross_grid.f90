@@ -12,10 +12,10 @@ CONTAINS
 		INTEGER :: astatus, i, j
 		DOUBLE PRECISION :: a, b, p_0, q_0, q, p, V, E, func, corr, divisor_a, divisor_b
 
-		a = DSQRT(8.0D0 * DATAN(1.0D0) * factor / omega )
-		b = 2.0D0 * DSQRT( 2.0D0 * DATAN(1.0D0) * omega * factor )
-		WRITE(*,*) a, b
-!		a = 0.20 /  DSQRT( omega )
+!		a = DSQRT(8.0D0 * DATAN(1.0D0) * factor / omega )
+!		b = 2.0D0 * DSQRT( 2.0D0 * DATAN(1.0D0) * omega * factor )
+!		WRITE(*,*) a, b
+		a = 0.20 *  omega
 		q = ABS( q_lim )
 		q_0 = 0.0D0
 
@@ -27,8 +27,8 @@ CONTAINS
 			divisor_a = 1.0
 
 			p = DSQRT( 2.0D0 * m * V_lim(NumV) )
-			b = 2.0D0 * DSQRT( 2.0D0 * DATAN(1.0D0) * omega * factor )
-!			b = 0.20 * DSQRT( omega )
+!			b = 2.0D0 * DSQRT( 2.0D0 * DATAN(1.0D0) * omega * factor )
+			b = 0.20 * omega 
 			p_0 = 0.0D0 
 
 !			WRITE(*,*) a, " : "

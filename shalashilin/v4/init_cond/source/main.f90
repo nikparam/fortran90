@@ -111,7 +111,7 @@ PROGRAM main
 		WRITE(20,'("Energy[ ",I2.2," ]=",F14.6," and ",F14.6", Norm = ",F14.6)') i, DBLE( eigen_states(i) ), E, N
 		WRITE(20,*) "-------------------------------------------------------------------------"
 		DO j = 1, NumG
-			WRITE(20,'("D[",I2.2,",",I2.2,"]=",F14.6,SP,F14.6,"i")') j, i, eigen_vectors(j,i)
+			WRITE(20,'("D[",I2.2,",",I2.2,"]=   (",F14.6,",",SP,F14.6,")")') j, i, eigen_vectors(j,i)
 		END DO
 		WRITE(20,*)
 	END DO
