@@ -3,7 +3,7 @@ PROGRAM Dcoeff
 	IMPLICIT NONE
 	EXTERNAL :: FEXD
  	DOUBLE COMPLEX :: DUMMY(1,1)
-	DOUBLE PRECISION :: T, TOUT, RTOL, ATOL, junk(6), params(15), m, Step, N, E, MAXT
+	DOUBLE PRECISION :: T, TOUT, RTOL, ATOL, junk(6), params(15), m, Step, N, E, dE, MAXT
 	INTEGER :: i, j, astatus, ITOL, ITASK, ISTATE, IOPT, LZW, LRW, IWORK(30), LIW, MF, IPAR, switch, NumG, LRP
 	CHARACTER :: fname*100, x1*4, file_params*40
 	DOUBLE PRECISION, ALLOCATABLE :: RWORK(:), q(:), p(:), omega(:), phase(:)
@@ -16,6 +16,7 @@ PROGRAM Dcoeff
 	     FORM = 'FORMATTED', ACTION = 'READ')
 	READ(10,*) switch
 	READ(10,*) NumG, MAXT, Step
+	READ(10,*) dE
 	READ(10,*) m
 
 	ALLOCATE(Y(NumG), R(NumG,NumG), omega(NumG), phase(NumG), STAT=astatus)
@@ -89,11 +90,11 @@ PROGRAM Dcoeff
 			READ(10*j,*) junk(1), q(j), p(j)
 		END DO
 
-		CALL coeff_matrix( NumG, m, params, omega, phase, q, p, 0, 0.0, 0.0, R)
+		CALL coeff_matrix( NumG, m, params, omega, phase, q, p, 0, 0.0, 0.0, dE, R)
 		RPAR(1:LRP) = RESHAPE( R, (/ NumG**2 /) )
 
 		WRITE(16,25) T, Y(:), (DBLE(Y(:))**2 + DIMAG(Y(:))**2), SUM(DBLE(Y(:))**2 + DIMAG(Y(:))**2)
-		CALL norm_energy(NumG,q,p,Y,N,E,omega,params,phase, 0, 0.0, 0.0)
+		CALL norm_energy(NumG,q,p,Y,N,E,omega,params,phase, 0, 0.0, 0.0, dE)
 		WRITE(15,35) T, N, E
 
 		ZWORK(:) = (0.0D0, 0.0D0)

@@ -1,9 +1,9 @@
-SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, S, H, M1)
+SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, dE, S, H, M1)
 
 	IMPLICIT NONE
 	INTEGER, INTENT(IN) :: NEQ, npts
 	INTEGER :: i, j
-	DOUBLE PRECISION, INTENT(IN) :: omega(NEQ), params(15), x(npts), wts(npts)
+	DOUBLE PRECISION, INTENT(IN) :: omega(NEQ), params(15), x(npts), wts(npts), dE
 	DOUBLE COMPLEX, INTENT(IN) ::  ksi(NEQ), eta(NEQ), S(NEQ,NEQ)
 	DOUBLE PRECISION :: a(NEQ,NEQ), left_boundary, right_boundary
 	DOUBLE COMPLEX ::  b(NEQ,NEQ), c(NEQ,NEQ), &
@@ -25,7 +25,7 @@ SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, S, H, M1)
 			new_x = shift( npts, x, a(i,j) )
 			V(i,j) = SUM( wts * &
 				      CONJG( contr_wave_packet( npts, new_x, ksi(i), eta(i) ) ) * &
-				      potential_map(npts,new_x,params) * &
+				      ( potential_map(npts,new_x,params) + dE ) * &
 				      contr_wave_packet( npts, new_x, ksi(j), eta(j) ) ) / DSQRT( a(i,j) )
 			V(j,i) = CONJG( V(i,j) )
 			new_x = 0.0

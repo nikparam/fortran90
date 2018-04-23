@@ -1,9 +1,9 @@
-SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, S, H, M1)
+SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, dE, S, H, M1)
 
 	INTEGER, INTENT(IN) :: NEQ
-	DOUBLE PRECISION, INTENT(IN) :: omega(NEQ), params(15)
+	DOUBLE PRECISION, INTENT(IN) :: omega(NEQ), params(15), dE
 	DOUBLE COMPLEX, INTENT(IN) ::  ksi(NEQ), eta(NEQ), S(NEQ,NEQ)
-	DOUBLE PRECISION :: a(NEQ,NEQ), V(NEQ), dV(NEQ), d2V(NEQ), d3V(NEQ) 
+	DOUBLE PRECISION :: a(NEQ,NEQ), V(NEQ), dV(NEQ), d2V(NEQ), d3V(NEQ)
 	DOUBLE COMPLEX ::  b(NEQ,NEQ), c(NEQ,NEQ), &
 			   B1(NEQ,NEQ), B2(NEQ,NEQ), B3(NEQ,NEQ), &
 			   M2(NEQ,NEQ), M3(NEQ,NEQ), &
@@ -19,6 +19,8 @@ SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, S, H, M1)
 	B3 = 0.125D0 * b**3 / a**3 + 0.75D0 / a**2
 	M1 = B1 * S
 	M2 = B2 * S
+
+
 	M3 = B3 * S
 
 	DO i = 1, NEQ
@@ -31,7 +33,7 @@ SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, S, H, M1)
 	X0(1:NEQ) = 0.5D0 * ( omega(1:NEQ) - ksi(1:NEQ) * ksi(1:NEQ) ) + V(1:NEQ) - &
 		    dV(1:NEQ) * DBLE(ksi(1:NEQ)) / omega(1:NEQ)  + &
 		    0.5D0 * d2V(1:NEQ) * DBLE(ksi(1:NEQ))**2 / omega(1:NEQ)**2 - &
-		    d3V(1:NEQ) * DBLE(ksi(1:NEQ))**3 / ( 6.0D0 * omega(1:NEQ)**3 )
+		    d3V(1:NEQ) * DBLE(ksi(1:NEQ))**3 / ( 6.0D0 * omega(1:NEQ)**3 ) + dE
 	X1(1:NEQ) = omega(1:NEQ) * ksi(1:NEQ) + dV(1:NEQ) - &
 		    d2V(1:NEQ) * DBLE(ksi(1:NEQ)) / omega(1:NEQ) + &
 		    0.5D0 * d3V(1:NEQ) * DBLE(ksi(1:NEQ))**2 / omega(1:NEQ)**2
