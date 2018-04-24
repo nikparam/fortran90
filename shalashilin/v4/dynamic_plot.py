@@ -48,11 +48,12 @@ NumG[0], Tmax[0], Tstep[0] = _read( init_cond_file1 )
 NumG[1], Tmax[1], Tstep[1] = _read( init_cond_file2 )
 
 m[0] = _read( init_cond_file1 )
+dE = _read( init_cond_file2 )
 m[1] = _read( init_cond_file2 )
 
 omega = [np.float(init_cond_file2.readline().split()[0].replace('D','E')) for _ in range(int(NumG[1]))]
 
-x = np.linspace(-7,7,350)
+x = np.linspace(-5,5,350)
 #x = np.linspace(0.0, 1000.0, 2000.0)
 start_time = time.time()
 if NumG[0] == NumG[1] and Tstep[0] == Tstep[1] and m[0] == m[1] and switch[0] == switch[1]:
@@ -73,11 +74,9 @@ if NumG[0] == NumG[1] and Tstep[0] == Tstep[1] and m[0] == m[1] and switch[0] ==
 	plt.ion()
 	ax = plt.gca()
 #	ax.set_autoscale_on(True)
-	ax.set_ylim([0,2])
+	ax.set_ylim([0,4])
 	psi = [0]*len(x)
 	ax.plot(x, [potential.potential_energy(_,params) for _ in x])
-#	ax.plot(x, [_morse(_) for _ in x])
-#	ax.plot(x, [10**-6 * _**2 for _ in x])
 #	current_plot1, current_plot2, = ax.plot( x, [psi[_].real for _ in range(len(psi))], \
 #					 	  x, [psi[_].imag for _ in range(len(psi))])
 
@@ -107,7 +106,7 @@ if NumG[0] == NumG[1] and Tstep[0] == Tstep[1] and m[0] == m[1] and switch[0] ==
 		if bin(count)[-13:] == '0'*13 or count == 0:
 #			print(q,p)
 			psi = _wave_packet(x, NumG, m, omega, q, p, D_fmt)
-			current_plot1.set_ydata([ abs(psi[i])**2+0.5  for i in range(len(psi))])
+			current_plot1.set_ydata([ abs(psi[i])**2 + 0.5 + dE  for i in range(len(psi))])
 #			current_plot2.set_ydata([ (psi[i].imag)**2 for i in range(len(psi))])
 			ax.relim()
 #			ax.autoscale_view(True,True)
