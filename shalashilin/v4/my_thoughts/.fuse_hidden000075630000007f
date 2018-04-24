@@ -1,0 +1,37 @@
+\documentclass[a4paper,14pt]{extarticle}
+% Стандартные формульные пакеты
+\usepackage{float,amsmath,esint,amsfonts,wrapfig,bbm}
+\usepackage{indentfirst}
+\usepackage[usenames]{color}
+\usepackage{multirow}
+%выставляем поля
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+% Русский текст в формулах
+\usepackage{mathtext}
+% Подключение русского языка
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage[utf8]{inputenc}
+% Рисунки
+\usepackage{graphicx,caption,subcaption}
+% Landscape page
+\usepackage{lscape}
+\renewcommand{\arraystretch}{1.1}
+
+\newcommand{\mymean}[3]{\left\langle #1 \right| #2 \left| #3 \left\rangle}
+\newcommand{\myint}[2]{\langle #1 | #2 \rangle}
+\newcommand{\myexp}[1]{\text{exp}\left( #1 \right)}
+\begin{document}
+$$V = \frac{1}{2}m\omega^2x^2,\ \dot{q}_k=\frac{p_k}{m},\ \dot{p}_k=-\left.\frac{\partial V}{\partial x}\right|_{q_k}=-m\omega^2q_k $$
+$$g_k = N\myexp{\frac{1}{\hbar}\left(-\frac{1}{2}m\omega(x-q_k)^2+ip_k(x-q_k)\right)} = \myexp{\frac{1}{\hbar}\left(-\frac{1}{2}m\omega x^2 + \xi_kx + \eta_k\right)}$$
+$$\xi_k = m\omega q_k + ip_k,\ \eta_k = \ln{N} - \frac{1}{2}m\omega q_k^2 - iq_kp_k$$
+$$\dot{\xi}_k=m\omega\dot{q}_k+i\dot{p}_k=\omega p_k - im\omega^2q_k = -i\omega(m\omega q_k + ip_k)=-i\omega\xi_k$$
+$$\dot{\eta}_k=-m\omega q_k\dot{q}_k-i(\dot{q}_kp_k+q_k\dot{p}_k)=-\dot{q}_k(m\omega q_k + ip_k)-iq_k\dot{p}_k=-\frac{p_k\xi_k}{m}+im\omega^2 q_k^2$$
+$$\tau_{mk}=\myint{g_m}{\dot{g}_k}=\frac{1}{\hbar}\mathbbm{S}_{mk}\left( \dot{\eta}_k+\dot{\xi}_k\frac{\xi_k+\xi_m^*}{2m\omega}\right)=%
+				   \frac{1}{\hbar}\mathbbm{S}_{mk}\left(im\omega^2 q_k^2-\frac{p_k\xi_k}{m}-i\frac{\xi_k^2+\xi_k\xi_m^*}{2m}\right)=$$
+$$=\frac{1}{\hbar}\mathbbm{S}_{mk}\left(im\omega^2 q_k^2 - \frac{i\xi_k\xi_m^*}{2m} - \frac{i\xi_k(\xi_k-2ip_k)}{2m}\right)=%
+   \frac{1}{\hbar}\mathbbm{S}_{mk}\left(im\omega^2 q_k^2 - \frac{i\xi_k\xi_m^*}{2m} - \frac{i|\xi_k|^2}{2m} \right)=$$
+$$=\frac{1}{\hbar}\mathbbm{S}_{mk}\left(im\omega^2 q_k^2 - \frac{i\xi_k\xi_m^*}{2m} - \frac{i(m^2\omega^2q_k^2 + p_k^2)}{2m} \right)=%
+   \frac{1}{\hbar}\mathbbm{S}_{mk}\left(\frac{i}{2}m\omega^2q_k^2 - \frac{ip_k^2}{2m} - \frac{i\xi_k\xi_m^*}{2m}\right)$$
+$$\mathbbm{H}_{mk} = \mymean{g_m}{\hat{T}}{g_k} + \frac{1}{2}m\omega^2\mymean{g_m}{V}{g_k}$$
+\end{document}
