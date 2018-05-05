@@ -3,9 +3,9 @@ SUBROUTINE potential_energy(x, params, V)
 	DOUBLE PRECISION, INTENT(IN) :: params(15), x
 	DOUBLE PRECISION, INTENT(OUT) :: V
 	DOUBLE PRECISION :: D_e, r_e, a
-	D_e = 0.05D0
-	r_e = 200.0D0
-	a = 0.005D0
+	D_e = 1.0D0
+	r_e = 0.0D0
+	a = 1.0D0
 
 	V = D_e * (DEXP( -2.0D0 * a * ( x - r_e ) ) - &
 		   2.0D0 * DEXP( -a * ( x - r_e ) ) + 1)
@@ -18,9 +18,9 @@ SUBROUTINE diff_potential_energy(x, params, dV)
 	DOUBLE PRECISION, INTENT(IN) :: params(15), x
 	DOUBLE PRECISION, INTENT(OUT) :: dV
 	DOUBLE PRECISION :: D_e, r_e, a
-	D_e = 0.05D0
-	r_e = 200.0D0
-	a = 0.005D0
+	D_e = 1.0D0
+	r_e = 0.0D0
+	a = 1.0D0
 
 	dV = 2.0D0 * a * D_e * ( -DEXP( -2.0D0 * a * ( x - r_e ) ) + &
 		   	     	  DEXP( -a * ( x - r_e ) ))
@@ -33,9 +33,9 @@ SUBROUTINE diff2_potential_energy(x, params, d2V)
 	DOUBLE PRECISION, INTENT(IN) :: params(15), x
 	DOUBLE PRECISION, INTENT(OUT) :: d2V
 	DOUBLE PRECISION :: D_e, r_e, a
-	D_e = 0.05D0
-	r_e = 200.0D0
-	a = 0.005D0
+	D_e = 1.0D0
+	r_e = 0.0D0
+	a = 1.0D0
 
 	d2V = 2.0D0 * a**2 * D_e * ( 2.0D0 * DEXP( -2.0D0 * a * ( x - r_e ) ) - &
 		   	     	  	     DEXP( -a * ( x - r_e ) ))
@@ -48,9 +48,9 @@ SUBROUTINE diff3_potential_energy(x, params, d2V)
 	DOUBLE PRECISION, INTENT(IN) :: params(15), x
 	DOUBLE PRECISION, INTENT(OUT) :: d2V
 	DOUBLE PRECISION :: D_e, r_e, a
-	D_e = 0.05D0
-	r_e = 200.0D0
-	a = 0.005D0
+	D_e = 1.0D0
+	r_e = 0.0D0
+	a = 1.0D0
 
 	d2V = 2.0D0 * a**3 * D_e * ( -4.0D0 * DEXP( -2.0D0 * a * ( x - r_e ) ) + &
 			   	     	      DEXP( -a * ( x - r_e ) ))

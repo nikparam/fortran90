@@ -41,10 +41,10 @@ switch = 13
 params = fs.read_params( switch, '../../potential/params.txt' )
 
 
-A = 1.6
-NumG = 8
+A = 0.2
+NumG = 4
 
-#D = [ 1, 1, 1, 1, 1j, 1j, 1j, 1j ]
+D = [ 1, 1, 1, 1 ]
 #D = [ -1j, 1j, 1, -1 ]
 #D = [ 1, 1, -1, -1 ]
 #D = [ -1j, 1j, -1, 1 ]
@@ -58,36 +58,8 @@ NumG = 8
 #       1.416881,
 #       1.416881 ]
 
-#D = [  11.935808 * 1j, 
-#      -11.935808 * 1j,
-#       -2.801350 * 1j,
-#        2.801350 * 1j,
-#      -11.935809, 
-#       11.935809,
-#        2.801350,
-#       -2.801350]
-
-#D = [  206.770970, 
-#       206.770981,
-#        -6.066178,
-#        -6.066178,
-#      -206.770975, 
-#      -206.770976,
-#         6.066178,
-#         6.066178]
-
-
-D = [ 3868.705418, 
-     -3868.705417,
-       -14.187348,
-        14.187348,
-      -3868.705417 * 1j, 
-       3868.705417 * 1j,
-         14.187348 * 1j,
-        -14.187348 * 1j ]
-
-q = [ 0.0, 0.0, 0.0, 0.0, -0.2, 0.2, -A, A ]
-p = [ -0.2, 0.2, -A, A, 0.0, 0.0, 0.0, 0.0 ]
+q = [ 0.0, 0.0, -A, A ]
+p = [ -A, A, 0.0, 0.0 ]
 
 omega = [1]*NumG
 phase = lmap( lambda x: 0.25 * np.log( x / np.pi ), omega )
@@ -120,14 +92,13 @@ E_exact = 7.5
 E0 = 2 * eps
 delta = 2 * eps
 delta_a = 2 * eps
-step = 0.01
+step = 0.1
 
 der_E = 2 * eps
 
-#while ( abs( delta_a ) > eps ):
-for i in range(1):
+while ( abs( delta_a ) > eps ):
+#for i in range(1):
 	xi, eta = fs.change_var( q, p, omega, phase )
-	print(eta)
 	overlap = fs.overlap( xi, eta, omega )
 	D = normalization( q, p, D, omega, phase )
 
@@ -138,8 +109,8 @@ for i in range(1):
 	delta_a = E.real - E_exact
 	der_E = delta_a / step
 
-#	print( 'zeroes = {0:g}\tA = {1:g}\tE = {2:g}\tstep = {3:g}\tE-E_ex = {4:g}\tdE = {5:g}\tE\' = {6:g}'\
-#		.format( NumZ, A, E.real, step, delta_a, delta, der_E ) )
+	print( 'zeroes = {0:g}\tA = {1:g}\tE = {2:g}\tstep = {3:g}\tE-E_ex = {4:g}\tdE = {5:g}\tE\' = {6:g}'\
+		.format( NumZ, A, E.real, step, delta_a, delta, der_E ) )
 
 	tempNumZ = num_zeroes( abs_full_psi, x )
 	if ( der_E > 0.0 ): step *= -0.5 
@@ -147,8 +118,8 @@ for i in range(1):
 	E0 = E
 	A += step
 
-	q = [ 0.0, 0.0, 0.0, 0.0, -0.2, 0.2, -A, A ]
-	p = [ -0.2, 0.2, -A, A, 0.0, 0.0, 0.0, 0.0 ]
+	q = [ 0.0, 0.0, -A, A ]
+	p = [ -A, A, 0.0, 0.0 ]
 	mapped_psi = lmap( lambda c, q0, p0, o, p: partial( psi, c, q0, p0, o, p ), \
 			   					 D, q, p, omega, phase )
 	full_psi = lambda x: reduce( lambda a, f: a + f(x), mapped_psi[1:], mapped_psi[0](x) )
@@ -165,7 +136,7 @@ for i in range( NumG ):
 ax2.text( -0.8, -0.05, r'$\Re\psi$', fontsize = 20 )
 ax3.text( -0.8, -0.035, r'$\Im\psi$', fontsize = 20 )
 
-#print('\n{0:g}'.format(A))
-#print(D)
-#print(q,p)
+print('\n{0:g}'.format(A))
+print(D)
+print(q,p)
 plt.show()

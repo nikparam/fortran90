@@ -81,7 +81,7 @@ PROGRAM Dcoeff
 
 	CALL CPU_TIME(t_start)
 
-	npts = 50
+	npts = 100
 	ALLOCATE( x(1:npts), wts(1:npts) )
 	CALL p_quadrature_rule ( npts, x, wts )	
 

@@ -14,7 +14,7 @@ SOURCE = ./source/add_to_list.f90 \
          ./source/get_cross_grid.f90 \
          ./source/norm_energy.f90 \
          ./source/main.f90  \
-         ../potential/pot_der.f90 \
+         ../potential/morse_potential.f90 \
          ../D_coeff/source/smatrix.f90 \
          ../D_coeff/source/change_var_mod.f90 \
          ../D_coeff/source/normalization.f90 

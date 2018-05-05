@@ -1,6 +1,6 @@
 13		! switch
 1.0D+4 1.0D-2   ! TMAX, TSTEP
-1.0D0 		! omega
+1.0001D0 	! omega
 1.0D0		! mass
 1.0D0		! grid area parameter
 2.0D0		! max coordinate

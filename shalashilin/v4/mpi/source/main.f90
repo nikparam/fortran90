@@ -34,6 +34,7 @@ PROGRAM main
 		DO i=1, NumG
 			READ(10,*) q(i), p(i)
 		END DO
+		CLOSE(UNIT = 10)
 
 	 	file_params = '../potential/params.txt'
 		CALL read_params(switch, file_params, params)

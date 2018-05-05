@@ -2,7 +2,7 @@ SUBROUTINE trajectories(NumG, avg, proc_id, q, p, MAXT, Step, m, params)
 
 	EXTERNAL :: FEXqp
 	INTEGER :: avg, i, proc_id, fnum, itraj, NEQ, ITASK, ISTATE, IOPT, LRW, IWORK(50), &
-		   LIW, MF, IPAR, ITOL, switch
+		   LIW, MF, IPAR, ITOL, switch, name1, name2
 	DOUBLE PRECISION :: RWORK(100), &
 			    DUMMY(1,1), RPAR(16), &
 			    ATOL, RTOL, V, dV1, dV2, params(15), m, MAXT
@@ -41,26 +41,29 @@ SUBROUTINE trajectories(NumG, avg, proc_id, q, p, MAXT, Step, m, params)
 		INQUIRE(FILE = fname_traj, EXIST = exists_traj)
 		INQUIRE(FILE = fname_en, EXIST = exists_en)
 
+		name1 = 20 + fnum
+		name2 = 30 + fnum
+
 		IF (exists_traj) THEN
-			OPEN(UNIT = 15, FILE = fname_traj, FORM = 'FORMATTED', &
+			OPEN(UNIT = name1, FILE = fname_traj, FORM = 'FORMATTED', &
 			     STATUS = 'OLD', ACTION = 'WRITE')
-			CLOSE(UNIT = 15, STATUS = 'DELETE')
+			CLOSE(UNIT = name1, STATUS = 'DELETE')
 		END IF
 
 		IF (exists_en) THEN
-			OPEN(UNIT = 25, FILE = fname_en, FORM = 'FORMATTED', &
+			OPEN(UNIT = name2, FILE = fname_en, FORM = 'FORMATTED', &
 			     STATUS = 'OLD', ACTION = 'WRITE')
-			CLOSE(UNIT = 25, STATUS = 'DELETE')
+			CLOSE(UNIT = name2, STATUS = 'DELETE')
 		END IF
 
-		OPEN(UNIT = 15, FILE = fname_traj, FORM = 'FORMATTED', &
+		OPEN(UNIT = name1, FILE = fname_traj, FORM = 'FORMATTED', &
 		     STATUS = 'NEW', POSITION = 'APPEND', ACTION = 'WRITE')
 
-		OPEN(UNIT = 25, FILE = fname_en, FORM = 'FORMATTED', &
+		OPEN(UNIT = name2, FILE = fname_en, FORM = 'FORMATTED', &
 		     STATUS = 'NEW', POSITION = 'APPEND', ACTION = 'WRITE')
 
-		WRITE(15,20) T, Y(:)
-		DO 40 WHILE ( TOUT .LE. MAXT )
+		WRITE(name1,11) T, Y(:)
+		DO 13 WHILE ( TOUT .LE. MAXT )
 
 			ISTATE = 1
 			RWORK = 0.0D0
@@ -73,16 +76,16 @@ SUBROUTINE trajectories(NumG, avg, proc_id, q, p, MAXT, Step, m, params)
 			IF ( ABS( dV ) .GT. EPS ) THEN
 				test = Step * EPS_step / ABS( dV )
 			END IF
-			WRITE(15,20) T, Y(:)
+			WRITE(name1,11) T, Y(:)
 			CALL potential_energy( Y(1), params(1:15), V )
-			WRITE(25,30) T, Y(2)**2/(2 * m),  V, Y(2)**2/(2 * m) +  V
+			WRITE(name2,11) T, Y(2)**2/(2 * m),  V, Y(2)**2/(2 * m) +  V
 
-20			FORMAT(F12.4,' ',E20.14,' ', E20.14)
-30			FORMAT(F12.4,:,3F14.6)
-			IF ( ISTATE .LT. 0 ) GO TO 80
-40		TOUT = TOUT + Step
-		CLOSE(UNIT = 15)
-		CLOSE(UNIT = 25)
+11			FORMAT(F12.4,' ',E20.14,' ', E20.14)
+12			FORMAT(F12.4,:,3F14.6)
+			IF ( ISTATE .LT. 0 ) GO TO 15
+13		TOUT = TOUT + Step
+		CLOSE(UNIT = name1)
+		CLOSE(UNIT = name2)
 !		WRITE(6,60) IWORK(11), IWORK(12), IWORK(13), IWORK(19), &
 !			    IWORK(20), IWORK(21), IWORK(22)
 !60		FORMAT(/'  No. steps =',I4,'  No. f-s =',I4, &
@@ -94,14 +97,14 @@ SUBROUTINE trajectories(NumG, avg, proc_id, q, p, MAXT, Step, m, params)
 		IWORK = 0
 	END DO		
 	CALL CPU_TIME(t_finish)
-	WRITE(6,50) t_finish - t_start
-50	FORMAT('CPU time= ', F10.4)
+	WRITE(6,14) t_finish - t_start
+14	FORMAT('CPU time= ', F10.4)
 !	info = 1
 	RETURN
 
 	STOP
-80	WRITE(6,90) ISTATE
-90	FORMAT(///'  Error halt: ISTATE =',I3)
+15	WRITE(6,16) ISTATE
+16	FORMAT(///'  Error halt: ISTATE =',I3)
 !	info = -1
 	STOP
 

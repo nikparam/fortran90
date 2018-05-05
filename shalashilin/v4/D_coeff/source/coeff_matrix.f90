@@ -30,15 +30,19 @@ SUBROUTINE coeff_matrix( NEQ, m, params, omega, phase, q, p, npts, x, wts, dE, R
 
 	R = -( 0.0D0, 1.0D0 ) *  MATMUL( SI, H - (0.0D0, 1.0D0) * z_zdot )
 
-	DO i = 1, NEQ
-		WRITE(6,20) tau1(i,:)
-	END DO
-
-	WRITE(*,*)
-
-	DO i = 1, NEQ
-		WRITE(6,20) tau2(i,:)
-	END DO
+!	DO i = 1, NEQ
+!		WRITE(6,20) tau1(i,:)
+!	END DO
+!
+!	WRITE(*,*)
+!
+!	DO i = 1, NEQ
+!		WRITE(6,20) tau2(i,:)
+!	END DO
+!
+!	DO i = 1, NEQ
+!		WRITE(6,20) R(i,:)
+!	END DO
 
 20 	FORMAT( 100("("F14.6,SP,F14.6,"i) ") )
 
