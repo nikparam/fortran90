@@ -1,4 +1,4 @@
-SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, dE, S, H, M1)
+SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, dE, S, H, L, M1)
 
 	IMPLICIT NONE
 	INTEGER, INTENT(IN) :: NEQ, npts
@@ -9,7 +9,7 @@ SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, dE, S, H, M1)
 	DOUBLE COMPLEX ::  b(NEQ,NEQ), c(NEQ,NEQ), &
 			   B1(NEQ,NEQ), B2(NEQ,NEQ), M2(NEQ,NEQ), &
 			   X0(NEQ), X1(NEQ), X2(NEQ), V(NEQ,NEQ)
-	DOUBLE COMPLEX, INTENT(OUT) :: H(NEQ,NEQ), M1(NEQ,NEQ)
+	DOUBLE COMPLEX, INTENT(OUT) :: H(NEQ,NEQ), L(NEQ,NEQ), M1(NEQ,NEQ)
 	DOUBLE PRECISION :: new_x(npts)
 
 	a(1:NEQ,1:NEQ) = 0.5 * ( SPREAD(omega(1:NEQ),1,NEQ) + SPREAD(omega(1:NEQ),2,NEQ) )
@@ -50,6 +50,7 @@ SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, dE, S, H, M1)
 
 20 	FORMAT( 100("( ",F14.6,SP,F14.6,"i ) ") )
 
+	L(:,:) = H(:,:) - V(:,:)
 	H(:,:) = H(:,:) + V(:,:)
 
 	CONTAINS
