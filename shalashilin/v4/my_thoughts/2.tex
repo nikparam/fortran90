@@ -1,0 +1,19 @@
+$$\myl_n=\frac{p_n^2}{2m} - \frac{1}{2}m\omega^2q_n^2$$
+$$\myl = \vec{C}^{\dagger}\left(\mathbbm{T}-\mathbbm{V}\right)\vec{C}=%
+	 \sum_{m,k}C_m^*C_k\left(-\frac{\hbar^2}{2m}\mymean{g_m}{\frac{\partial^2}{\partial x^2}}{g_k}-%
+				  \frac{1}{2}m\omega^2\mymean{g_m}{x^2}{g_k}\right)=$$
+$$=\sum_{m,k}C_m^*C_k\left(\left(\frac{\hbar\omega}{2}-\frac{\xi_k^2}{2m}\right)\mathbbm{S}_{mk}+\omega\xi_k\mymean{g_m}{x}{g_k}-\right.$$
+$$		\left.-\frac{1}{2}m\omega^2\mymean{g_m}{x^2}{g_k}-\frac{1}{2}m\omega^2\mymean{g_m}{x^2}{g_k}\right)$$
+$$=\sum_{m,k}C_m^*C_k\left(\left(\frac{\hbar\omega}{2}-\frac{\xi_k^2}{2m}\right)\mathbbm{S}_{mk}+\omega\xi_k\mymean{g_m}{x}{g_k}-%
+			   m\omega^2\mymean{g_m}{x^2}{g_k}\right)=$$
+$$=\sum_{m,k}C_m^*C_k\left(\frac{\hbar\omega}{2}-\frac{\xi_k^2}{2m}+\frac{\omega\xi_k(\xi_m^*+\xi_k)}{2m\omega}-%
+		   m\omega^2\left(\frac{\hbar}{2m\omega}+\left(\frac{\xi_m^*+\xi_k}{2m\omega}\right)^2\right)\right)\mathbbm{S}_{mk}$$
+$$=\sum_{m,k}C_m^*C_k\mathbbm{S}_{mk}\left(\frac{2\xi_k\xi_m^*-(\xi_m^*+\xi_k)^2}{4m}\right)=%
+  -\sum_{m,k}C_m^*C_k\mathbbm{S}_{mk}\frac{(\xi_m^*)^2+\xi_k^2}{4m}=$$
+$$=-\frac{1}{4m}\left(\sum_{m,k}C_m^*C_k\mathbbm{S}_{mk}\xi_k^2+\sum_{m,k}C_m^*C_k\mathbbm{S}_{mk}(\xi_m^2)^*\right)=$$
+$$=-\frac{1}{4m}\left(\sum_{m,k}C_m^*C_k\mathbbm{S}_{mk}\xi_k^2+\sum_{m,k}(C_mC_k^*\mathbbm{S}_{km}\xi_m^2)^*\right)=$$
+$$=-\frac{1}{2m}\sum_{m,k}\mathit{Re}(C_m^*C_k\mathbbm{S}_{mk}\xi_k^2)=%
+   -\frac{1}{2m}\sum_{m,k}\left(m^2\omega^2q_k^2-p_k^2\right)\mathit{Re}(C_m^*\mathbbm{S}_{mk}C_k)=$$
+$$=\sum_{m,k}\left(\frac{p_k^2}{2m}-\frac{1}{2}m\omega^2q_k^2\right)\mathit{Re}(C_m^*\mathbbm{S}_{mk}C_k)=$$
+$$=\sum_{m,k}\myl_k\mathit{Re}\left(C_m^*(0)C_k(0)\myexp{-\frac{i}{\hbar}\int_0^t(\myl_m-\myl_k)\,dt'}\mathbbm{S}_{mk}\right) = $$
+$$= \sum_{m,k}\myl_k\cos\left(\frac{1}{\hbar}\int_0^t(\myl_m-\myl_k)\,dt'\right)\mathit{Re}(C_m^*(0)\mathbbm{S}_{mk}C_k(0))$$

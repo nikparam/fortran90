@@ -1,0 +1,32 @@
+\documentclass[a4paper,14pt]{extarticle}
+% Стандартные формульные пакеты
+\usepackage{float,amsmath,esint,amsfonts,wrapfig,bbm}
+\usepackage{indentfirst}
+\usepackage[usenames]{color}
+\usepackage{multirow}
+%выставляем поля
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+% Русский текст в формулах
+\usepackage{mathtext}
+% Подключение русского языка
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage[utf8]{inputenc}
+% Рисунки
+\usepackage{graphicx,caption,subcaption}
+% Landscape page
+\usepackage{lscape}
+\renewcommand{\arraystretch}{1.1}
+
+\newcommand{\mymean}[3]{\left\langle #1 \left| #2 \right| #3 \right\rangle}
+\newcommand{\myint}[2]{\langle #1 | #2 \rangle}
+\newcommand{\myexp}[1]{\text{exp}\left( #1 \right)}
+\newcommand{\myl}[0]{\mathit{L}}
+\begin{document}
+\section{Гармонический осциллятор}
+\input{1.tex}
+\input{2.tex}
+\input{3.tex}
+\input{4.tex}
+
+\end{document}

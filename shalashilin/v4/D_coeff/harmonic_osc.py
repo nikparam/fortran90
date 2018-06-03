@@ -69,6 +69,9 @@ def full_lagrangian( q, p, S, m, omega, N ):
 
 	return np.reshape(lagrangian,[N,N]) * S
 
+def frict(t,q,p,m,omega):
+	return 2/m * (0.5*energy(q,p,m,omega)*t+0.25/omega*lagrangian(q,p,m,omega)*np.sin(2*omega*t)-0.25*q*p*(np.cos(2*omega*t)-1))
+
 def func( t, y, args ):
 
 	ydot = [0]*3*args[2]
@@ -82,8 +85,8 @@ def func( t, y, args ):
 	
 
 #A = 2.093365
-A = 1.8315
-#A = 0.25
+#A = 1.8315
+A = 0.25
 m = 1.0
 omega = 1.0
 norm = m * omega / np.pi
@@ -118,11 +121,11 @@ dt = 0.05
 
 x = np.linspace(-5,5,100)
 
-#ax = plt.gca()
-#ax.set_ylim([0,4])
-#ax.plot(x,[0.5 * m * omega**2 * _**2 for _ in x])
-#psi = [0]*len(x)
-#current_plot1, = ax.plot( x, [abs(_)**2 for _ in psi] )
+ax = plt.gca()
+ax.set_ylim([0,4])
+ax.plot(x,[0.5 * m * omega**2 * _**2 for _ in x])
+psi = [0]*len(x)
+current_plot1, = ax.plot( x, [abs(_)**2 for _ in psi] )
 while res.successful() and res.t < t1:
 
 	y = res.integrate( res.t + dt )
@@ -137,17 +140,17 @@ while res.successful() and res.t < t1:
 	t = np.dot( np.conjugate(C),np.dot(kinetic(q,p,S,m,omega,N),C))
 	v = np.dot( np.conjugate(C),np.dot(potential(q,p,S,m,omega,N),C))
 
-	print(res.t+dt,q[0].real,p[0].real,s.real,t.real,v.real,e.real,l.real)
+#	print(res.t+dt,q[0].real,p[0].real,s.real,t.real,v.real,e.real,l.real)
 
-#	psi = [0] * len(x)
-#	for i in range(len(x)):
-#		for j,k,l in zip(q,p,C):
-#			psi[i] += l * ( norm )**0.25 * np.exp( -0.5 * m * omega * ( x[i] - j )**2 + 1j * k * ( x[i] - j ) )
-#
-#	current_plot1.set_ydata( [ abs(_)**2 + e.real for _ in psi ] )
-#	txt = ax.text(3.0,0.075,str(res.t+dt))
-#	plt.draw()
-#	plt.pause(1)
-#	ax.texts.remove(txt)
+	psi = [0] * len(x)
+	for i in range(len(x)):
+		for j,k,l in zip(q,p,C):
+			psi[i] += l * ( norm )**0.25 * np.exp( -0.5 * m * omega * ( x[i] - j )**2 + 1j * k * ( x[i] - j ) )
+
+	current_plot1.set_ydata( [ abs(_)**2 + e.real for _ in psi ] )
+	txt = ax.text(3.0,0.075,str(res.t+dt))
+	plt.draw()
+	plt.pause(1)
+	ax.texts.remove(txt)
 
 
