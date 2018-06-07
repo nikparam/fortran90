@@ -42,10 +42,9 @@ params = fs.read_params( switch, '../../potential/params.txt' )
 
 
 A = 0.25
-NumG = 8
+NumG = 4
 
-#D = [ 1, 1, 1, 1 ]
-D = [ 1, 1, 1, 1, 1, 1, 1, 1 ]
+D = [ 1, 1, 1, 1 ]
 #D = [ 1j, -1j, -1, 1 ]
 #D = [ 1, 1, -1, -1 ]
 #D = [ 1j, -1j, 1, -1 ]
@@ -59,11 +58,8 @@ D = [ 1, 1, 1, 1, 1, 1, 1, 1 ]
 #       1.416881,
 #       1.416881 ]
 
-#	q = [ A, -A, -A, A ]
-#	p = [ A, A, -A, -A ]
-
-q = [ A, -A, -A, A, 2.0 * A, 0.0, -2.0 * A, 0.0 ]
-p = [ A, A, -A, -A, 0.0, 2.0 * A, 0.0, -2.0 * A ]
+q = [ A, -A, -A, A ]
+p = [ A, A, -A, -A ]
 
 omega = [1]*NumG
 phase = lmap( lambda x: 0.25 * np.log( x / np.pi ), omega )
@@ -90,9 +86,9 @@ ax3 = fig.add_subplot(224)
 
 ax1.plot( x, lmap( abs_full_psi, x ) )
 
-eps = 1.0e-7
+eps = 1.0e-6
 
-E_exact = 19.5
+E_exact = 0.5
 E0 = 2 * eps
 delta = 2 * eps
 delta_a = 2 * eps
@@ -111,26 +107,20 @@ while ( abs( delta_a ) > eps ):
 
 	delta = E.real - E0.real
 	delta_a = E.real - E_exact
-	der_E = delta_a / step
+	der_E = delta / step
 
 	print( 'zeroes = {0:g}\tA = {1:g}\tE = {2:g}\tstep = {3:g}\tE-E_ex = {4:g}\tdE = {5:g}\tE\' = {6:g}'\
 		.format( NumZ, A, E.real, step, delta_a, delta, der_E ) )
 
-#	tempNumZ = num_zeroes( abs_full_psi, x )
-
+	tempNumZ = num_zeroes( abs_full_psi, x )
 	if ( der_E > 0.0 ): step *= -0.5 
-
 #	if ( tempNumZ != NumZ ): step *= -0.5
 
 	E0 = E
 	A += step
 
-#	q = [ A, -A, -A, A ]
-#	p = [ A, A, -A, -A ]
-
-	q = [ A, -A, -A, A, 2.0 * A, 0.0, -2.0 * A, 0.0 ]
-	p = [ A, A, -A, -A, 0.0, 2.0 * A, 0.0, -2.0 * A ]
-
+	q = [ 0.0, 0.0, -A, A ]
+	p = [ -A, A, 0.0, 0.0 ]
 	mapped_psi = lmap( lambda c, q0, p0, o, p: partial( psi, c, q0, p0, o, p ), \
 			   					 D, q, p, omega, phase )
 	full_psi = lambda x: reduce( lambda a, f: a + f(x), mapped_psi[1:], mapped_psi[0](x) )
