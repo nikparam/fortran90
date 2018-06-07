@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from pprint import pprint
 import scipy.integrate as spint
 
+key = 0
+
 def lagrangian(q,p,m,omega):
 
 	return 0.5 * p**2 / m - 0.5 * m * omega**2 * q**2
@@ -69,40 +71,37 @@ def full_lagrangian( q, p, S, m, omega, N ):
 
 	return np.reshape(lagrangian,[N,N]) * S
 
-def frict(t,q,p,m,omega):
-	return 2/m * (0.5*energy(q,p,m,omega)*t+0.25/omega*lagrangian(q,p,m,omega)*np.sin(2*omega*t)-0.25*q*p*(np.cos(2*omega*t)-1))
-
 def func( t, y, args ):
 
 	ydot = [0]*3*args[2]
 
 	for i in range( args[2] ):
 		ydot[i] = y[ args[2] + i ] / args[0]
-		ydot[i+args[2]] = -args[0] * args[1]**2 * y[ i ]
+		ydot[i+args[2]] = -args[0] * args[1]**2 * y[ i ] 
 		ydot[i+2*args[2]] = -1j*( 0.5 * args[1] - lagrangian( y[ i ], y[ args[2] + i ], args[0], args[1] ) )*y[ 2 * args[2] + i ]
 
 	return ydot
 	
 
-#A = 2.093365
-#A = 1.8315
-A = 0.25
+A = 3.56072
 m = 1.0
 omega = 1.0
+r = 10
+n = 2
 norm = m * omega / np.pi
 
-q = [-A, 0.0, 0.0, A]
-p = [0.0, -A, A, 0.0]
-C = [1.0, 1.0, 1.0, 1.0]
+q = [A, -A, -A, A, 2*A, 0.0, -2*A, 0.0]
+p = [A, A, -A, -A, 0.0, 2*A, 0.0, -2*A]
 
-#q = [-A, A]
-#p = [0.0, 0.0]
-#C = [1.0, 1.0]
+#q = [A, 0.0, -A, 0.0]
+#p = [0.0, A, 0.0, -A]
 
-if len(q) == len(p) and len(p) == len(C):
+if len(q) == len(p):
 	N = len(q)
 else:
 	raise NameError('initial conditions have inconsistent length')
+
+C = [1.0]*N
 
 S = overlap(q,p,m,omega,norm,N)
 s = np.dot( np.conjugate(C),np.dot(S,C))
@@ -114,18 +113,22 @@ y0.extend(C)
 
 t0 = 0.
 res = spint.ode(func).set_integrator('zvode', method='bdf',rtol=1e-11, atol=1e-11)
-res.set_initial_value(y0,t0).set_f_params([m,omega,N])
+res.set_initial_value(y0,t0).set_f_params([m,omega,N,r,n])
 
-t1 = 50
+t1 = 10
 dt = 0.05
 
-x = np.linspace(-5,5,100)
+if key == 0:
+	e = np.dot( np.conjugate(C),np.dot(hamiltonian(q,p,S,m,omega,N),C))
+	l = np.sqrt(2 * e.real / m / omega**2)
+	x = np.linspace(-l-5,l+5,1000)
+	ax = plt.gca()
+	ax.set_ylim([e.real - 0.5, e.real + 0.5])
+	ax.set_xlim( [ -l - 5, l + 5 ] )
+	ax.plot(x,[0.5 * m * omega**2 * _**2 for _ in x])
+	psi = [0]*len(x)
+	current_plot1, = ax.plot( x, [abs(_)**2 for _ in psi] )
 
-ax = plt.gca()
-ax.set_ylim([0,4])
-ax.plot(x,[0.5 * m * omega**2 * _**2 for _ in x])
-psi = [0]*len(x)
-current_plot1, = ax.plot( x, [abs(_)**2 for _ in psi] )
 while res.successful() and res.t < t1:
 
 	y = res.integrate( res.t + dt )
@@ -139,18 +142,18 @@ while res.successful() and res.t < t1:
 	l = np.dot( np.conjugate(C),np.dot(full_lagrangian(q,p,S,m,omega,N),C))
 	t = np.dot( np.conjugate(C),np.dot(kinetic(q,p,S,m,omega,N),C))
 	v = np.dot( np.conjugate(C),np.dot(potential(q,p,S,m,omega,N),C))
-
-#	print(res.t+dt,q[0].real,p[0].real,s.real,t.real,v.real,e.real,l.real)
-
-	psi = [0] * len(x)
-	for i in range(len(x)):
-		for j,k,l in zip(q,p,C):
-			psi[i] += l * ( norm )**0.25 * np.exp( -0.5 * m * omega * ( x[i] - j )**2 + 1j * k * ( x[i] - j ) )
-
-	current_plot1.set_ydata( [ abs(_)**2 + e.real for _ in psi ] )
-	txt = ax.text(3.0,0.075,str(res.t+dt))
-	plt.draw()
-	plt.pause(1)
-	ax.texts.remove(txt)
-
+	
+	if key == 0:
+		psi = [0] * len(x)
+		for i in range(len(x)):
+			for j,k,l in zip(q,p,C):
+				psi[i] += l * ( norm )**0.25 * np.exp( -0.5 * m * omega * ( x[i] - j )**2 + 1j * k * ( x[i] - j ) )
+	
+		current_plot1.set_ydata( [ abs(_)**2 + e.real for _ in psi ] )
+		txt = ax.text(np.sqrt(2 * e.real / m / omega**2) - 1,e.real+0.1,str(res.t+dt))
+		plt.draw()
+		plt.pause(1.5)
+		ax.texts.remove(txt)
+	else:
+		print(res.t+dt,q[0].real,p[0].real,s.real,t.real,v.real,e.real,l.real)
 
