@@ -1,4 +1,3 @@
 git add .
 git commit -m 'automatic commit'
-echo "nikparam
-glvoxy/8cb" | git push origin master
+git push origin master < ~/Documents/log_pass.txt
