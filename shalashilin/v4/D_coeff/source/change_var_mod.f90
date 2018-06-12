@@ -7,6 +7,7 @@ SUBROUTINE change_var(NEQ,q,p,ksi,eta,omega,phase)
 	DO i=1,NEQ
 		ksi(i) = DCMPLX( omega(i) * q(i), p(i) )
 		eta(i) = DCMPLX( phase(i) - 0.5D0 * omega(i) * q(i) * q(i), -q(i) * p(i) )
+!		eta(i) = DCMPLX( phase(i) - 0.5D0 * omega(i) * q(i) * q(i), 0.0 )
 	END DO
 
 	RETURN

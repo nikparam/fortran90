@@ -3,7 +3,7 @@ PROGRAM Dcoeff
 	IMPLICIT NONE
 	EXTERNAL :: FEXD
  	DOUBLE COMPLEX :: DUMMY(1,1)
-	DOUBLE PRECISION :: T, TOUT, RTOL, ATOL, junk(6), params(15), m, Step, N, E, dE, MAXT
+	DOUBLE PRECISION :: T, TOUT, RTOL, ATOL, junk(6), params(15), m, Step, N, E, LE, dE, MAXT
 	DOUBLE PRECISION, ALLOCATABLE :: x(:), new_x(:), wts(:)
 	INTEGER :: i, j, astatus, ITOL, ITASK, ISTATE, IOPT, LZW, LRW, IWORK(30), LIW, MF, IPAR, switch, npts, NumG, LRP
 	CHARACTER :: fname*100, x1*4, file_params*40
@@ -82,8 +82,8 @@ PROGRAM Dcoeff
 
 	CALL CPU_TIME(t_start)
 
-	npts = 50
-	ALLOCATE( x(1:npts), wts(1:npts) )
+	npts = 100
+	ALLOCATE( x(npts), wts(npts) )
 	CALL h_quadrature_rule ( npts, x, wts )	
 
 	DO 45 WHILE ( TOUT .LE. MAXT )
@@ -97,8 +97,8 @@ PROGRAM Dcoeff
 		CALL coeff_matrix( NumG, m, params, omega, phase, q, p, npts, x, wts, dE, R)
 		RPAR(1:LRP) = RESHAPE( R, (/ NumG**2 /) )
 		WRITE(16,25) T, Y(:), (DBLE(Y(:))**2 + DIMAG(Y(:))**2), SUM(DBLE(Y(:))**2 + DIMAG(Y(:))**2)
-		CALL norm_energy(NumG, q, p, Y, N, E, omega, params, phase, npts, x, wts, dE)
-		WRITE(15,35) T, N, E
+		CALL norm_energy(NumG, q, p, Y, N, E, LE, omega, params, phase, npts, x, wts, dE)
+		WRITE(15,35) T, N, E, LE
 
 		ZWORK(:) = (0.0D0, 0.0D0)
 		RWORK(:) = 0.0D0
@@ -111,7 +111,7 @@ PROGRAM Dcoeff
 			   DUMMY, MF, RPAR, IPAR)
 
 25		FORMAT(F16.6,1X,100F16.6)
-35		FORMAT(F16.6,1X,F16.8,'  ',F16.8)
+35		FORMAT(F16.6,1X,F16.8,'  ',F16.8,'  ',F16.8)
 		IF (ISTATE .LT. 0) GOTO 85
 45	TOUT = TOUT + Step
 	CALL CPU_TIME(t_finish)

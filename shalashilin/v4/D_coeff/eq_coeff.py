@@ -8,20 +8,21 @@ def energy(q,p,m,omega):
 	return 0.5 * ( p**2 / m + m * omega**2 * q**2 )
 
 def func(t,q,p,m,omega):
-	return 0.5 * ( omega + lagrangian(q,p,m,omega) * np.sin( 2 * omega * t ) / ( omega * t ) ) * t 
-
-def frict(t,q,p,m,omega):
-	return 2/m * (0.5*energy(q,p,m,omega)*t+0.25/omega*lagrangian(q,p,m,omega)*np.sin(2*omega*t)-0.25*q*p*(np.cos(2*omega*t)-1))
+	return 0.5 * ( omega * t + lagrangian(q,p,m,omega) * np.sin( 2 * omega * t ) / omega - 2 * q * p * np.sin( omega * t )**2 )  
 
 def exponent(t,q,p,c,m,omega):
-	return np.log(c) - 1j * 0.5 * ( omega * t - lagrangian(q,p,m,omega) * np.sin( 2 * omega * t ) / omega + 2 * q * p * np.sin( omega * t )**2 )
+	return np.log(c) - 1j * 0.5 * ( omega * t + lagrangian(q,p,m,omega) * np.sin( 2 * omega * t ) / omega - 2 * q * p * np.sin( omega * t )**2 )
 
 m = 1.0
 omega = 1.0
 A = 1.1584
 
+#q = [A, 0.0, -A, 0.0]
+#p = [0.0, A, 0.0, -A]
+
 q = [A, -A, -A, A]
 p = [A, A, -A, -A]
+
 c = [1.0,1.0,1.0,1.0]
 
 if len(q) == len(p) and len(p) == len(c):
@@ -37,7 +38,6 @@ ax2 = fig.add_subplot(212)
 #ax3 = fig1.add_axes([0.1,0.1,0.8,0.8])
 for i in range(N):
 	e = [np.exp( exponent(_,q[i],p[i],c[i],m,omega) ) for _ in t]
-#	e = [ exponent(_,q[i],p[i],c[i],m,omega)  for _ in t]
 	f = [func(_,q[i],p[i],m,omega) for _ in t]
 	ax1.plot(t,[_.real for _ in e],label='q={:.4f}, p={:.4f}, C={:.4f}'.format(q[i],p[i],c[i]))
 	ax1.set_title('Real part')

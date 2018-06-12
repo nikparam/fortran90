@@ -21,6 +21,7 @@ SUBROUTINE coeff_matrix( NEQ, m, params, omega, phase, q, p, npts, x, wts, dE, R
 
 	dksi(1:NEQ) = (/ ( DCMPLX( omega(i) * p(i) / m, -dV(i) ), i=1,NEQ ) /)
 	deta(1:NEQ) = (/ ( DCMPLX( -omega(i) * q(i) * p(i) / m, -p(i) * p(i)/m + q(i) * dV(i) ), i=1,NEQ ) /)
+!	deta(1:NEQ) = (/ ( DCMPLX( -omega(i) * q(i) * p(i) / m, 0.0 ), i=1,NEQ ) /)
 
 	z_zdot(1:NEQ, 1:NEQ) = M1 * SPREAD(dksi(1:NEQ), 1, NEQ) + S * SPREAD(deta(1:NEQ), 1, NEQ)
 	CALL inverse(NEQ, S, SI)

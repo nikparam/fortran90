@@ -10,7 +10,7 @@ def _wave_packet( x, NumG, m, omega, q, p, D ):
 		for i in range(NumG):
 			xi = m * omega[i] * q[i] + 1j * p[i]
 			eta = 0.25 * np.log( 0.5 * m * omega[i] / np.pi ) - 0.5 * ( m * omega[i] * q[i]**2 + 1j * q[i] * p[i] )
-#			eta = 0.25 * np.log(  m * omega[i] / np.pi ) - 0.5 * m * omega[i] * q[i]**2
+			eta = 0.25 * np.log(  m * omega[i] / np.pi ) - 0.5 * m * omega[i] * q[i]**2
 			psi[_] += D[i] * np.exp(-0.5 * m * omega[i] * x[_]**2 + xi * x[_] + eta)
 
 	return psi
@@ -53,7 +53,7 @@ m[1] = _read( init_cond_file2 )
 
 omega = [np.float(init_cond_file2.readline().split()[0].replace('D','E')) for _ in range(int(NumG[1]))]
 
-x = np.linspace(-4,4,75)
+x = np.linspace(-2,20,200)
 start_time = time.time()
 if NumG[0] == NumG[1] and Tstep[0] == Tstep[1] and m[0] == m[1] and switch[0] == switch[1]:
 	switch = int(switch[0])
@@ -65,20 +65,21 @@ if NumG[0] == NumG[1] and Tstep[0] == Tstep[1] and m[0] == m[1] and switch[0] ==
 
 	coeff_fin = open(path_coeff+'D_coeff.out','r')
 	qp_fin = [ open(path_traj + 'out' + _ffmt(_) + '.out','r') for _ in range(1,NumG+1) ]
-	params = potential.read_params(switch,'./potential/params.txt')
-	print(params)
+#	params = potential.read_params(switch,'./potential/params.txt')
+#	print(params)
 
-#	plt.ion()
+	plt.ion()
 	ax = plt.gca()
-#	ax.set_autoscale_on(True)
-	ax.set_ylim([0,4])
+	ax.set_autoscale_on(True)
+	ax.set_ylim([-20,20])
 	psi = [0]*len(x)
-	ax.plot(x, [potential.potential_energy(_,params) for _ in x])
+#	ax.plot(x, [potential.potential_energy(_,params) for _ in x])
 #	ax.plot(x, [ ( 1 - np.exp(-i) )**2 for i in x ] )
+	ax.plot(x, [ np.exp(-i) for i in x ] )
 #	current_plot1, current_plot2, = ax.plot( x, [psi[_].real for _ in range(len(psi))], \
 #					 	  x, [psi[_].imag for _ in range(len(psi))])
 
-#	current_plot1, = ax.plot( x, [abs(psi[_])**2 for _ in range(len(psi))] )
+	current_plot1, = ax.plot( x, [abs(psi[_])**2 for _ in range(len(psi))] )
 	count = 0
 	num = 0
 	sum_psi = [ 0 ] * len(x)
@@ -104,19 +105,19 @@ if NumG[0] == NumG[1] and Tstep[0] == Tstep[1] and m[0] == m[1] and switch[0] ==
 		if bin(count)[-13:] == '0'*13 or count == 0:
 #			print(q,p)
 			psi = _wave_packet(x, NumG, m, omega, q, p, D_fmt)
-			sum_psi = [ sum_psi[i] + abs( psi[i] )**2 for i in range( len(x) ) ]
-#			current_plot1.set_ydata([ abs(psi[i])**2 + 2.5 - dE  for i in range(len(psi))])
-#			current_plot2.set_ydata([ (psi[i].imag)**2 for i in range(len(psi))])
+#			sum_psi = [ sum_psi[i] + abs( psi[i] )**2 for i in range( len(x) ) ]
+#			current_plot1.set_ydata([ abs(psi[i])**2  for i in range(len(psi))])
+			current_plot1.set_ydata([ psi[i].real for i in range(len(psi))])
 #			ax.relim()
-#			ax.autoscale_view(True,True)
-#			txt = ax.text(3.0, 0.075, str(t))
-#			plt.draw()
-#			plt.pause(1)
-#			ax.texts.remove(txt)
+			ax.autoscale_view(True,True)
+			txt = ax.text(3.0, 0.075, str(t))
+			plt.draw()
+			plt.pause(1)
+			ax.texts.remove(txt)
 			num += 1
 		count += 1
 
-	ax.plot( x, [ sum_psi[i] / num + 2.5 for i in range( len(x) ) ])	
+#	ax.plot( x, [ sum_psi[i] / num + 2.5 for i in range( len(x) ) ])	
 
 plt.show()
 print('CPU time= {:f} '.format( time.time() - start_time ) )

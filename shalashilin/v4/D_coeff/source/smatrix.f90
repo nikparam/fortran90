@@ -25,10 +25,10 @@ SUBROUTINE overlap(NEQ, x, y, const, M)
 	        END DO
 	END DO
 
+!	WRITE(*,*) "___________________________"
 !	DO i = 1, NEQ
 !		WRITE(*,*) M(i,:)
 !	END DO
 
-!	M = M * DSQRT( 4.0D0 * DATAN(1.0D0) / a ) 
 	RETURN
 END SUBROUTINE overlap

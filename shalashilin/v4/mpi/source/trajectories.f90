@@ -80,7 +80,7 @@ SUBROUTINE trajectories(NumG, avg, proc_id, q, p, MAXT, Step, m, params)
 			CALL potential_energy( Y(1), params(1:15), V )
 			WRITE(name2,11) T, Y(2)**2/(2 * m),  V, Y(2)**2/(2 * m) +  V
 
-11			FORMAT(F12.4,' ',E20.14,' ', E20.14)
+11			FORMAT(F12.4,' ',E20.14,' ', E20.14,' ', E20.14)
 12			FORMAT(F12.4,:,3F14.6)
 			IF ( ISTATE .LT. 0 ) GO TO 15
 13		TOUT = TOUT + Step

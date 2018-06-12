@@ -1,4 +1,4 @@
-SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, dE, S, H, M1)
+SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, dE, S, H, L, M1)
 
 	INTEGER, INTENT(IN) :: NEQ
 	DOUBLE PRECISION, INTENT(IN) :: omega(NEQ), params(15), dE
@@ -8,7 +8,7 @@ SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, dE, S, H, M1)
 			   B1(NEQ,NEQ), B2(NEQ,NEQ), B3(NEQ,NEQ), &
 			   M2(NEQ,NEQ), M3(NEQ,NEQ), &
 			   X0(NEQ), X1(NEQ), X2(NEQ), X3(NEQ)
-	DOUBLE COMPLEX, INTENT(OUT) :: H(NEQ,NEQ), M1(NEQ,NEQ)
+	DOUBLE COMPLEX, INTENT(OUT) :: H(NEQ,NEQ), L(NEQ,NEQ), M1(NEQ,NEQ)
 
 	a(1:NEQ,1:NEQ) = 0.5 * ( SPREAD(omega(1:NEQ),1,NEQ) + SPREAD(omega(1:NEQ),2,NEQ) )
 	b(1:NEQ,1:NEQ) = SPREAD(ksi(1:NEQ),1,NEQ) + SPREAD(CONJG(ksi(1:NEQ)),2,NEQ)
@@ -19,8 +19,6 @@ SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, dE, S, H, M1)
 	B3 = 0.125D0 * b**3 / a**3 + 0.75D0 / a**2
 	M1 = B1 * S
 	M2 = B2 * S
-
-
 	M3 = B3 * S
 
 	DO i = 1, NEQ
@@ -43,6 +41,8 @@ SUBROUTINE hamiltonian(NEQ, ksi, eta, omega, params, npts, x, wts, dE, S, H, M1)
 
 	H(1:NEQ,1:NEQ) = SPREAD(X0(1:NEQ),1,NEQ) * S + SPREAD(X1(1:NEQ),1,NEQ) * M1 + &
 			 SPREAD(X2(1:NEQ),1,NEQ) * M2 + SPREAD(X3(1:NEQ),1,NEQ) * M3
+
+	L(1:NEQ,1:NEQ) = 0.0
 
 	RETURN
 

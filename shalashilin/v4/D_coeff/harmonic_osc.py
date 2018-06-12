@@ -12,7 +12,8 @@ def lagrangian(q,p,m,omega):
 def overlap( q, p, m, omega, norm, N ):
 
 	xi = lambda x, y: m * omega * x + 1j * y
-	eta = lambda x, y: 0.25 * np.log(norm) - 0.5 * m * omega * x**2 -1j * x * y
+#	eta = lambda x, y: 0.25 * np.log(norm) - 0.5 * m * omega * x**2 -1j * x * y
+	eta = lambda x, y: 0.25 * np.log(norm) - 0.5 * m * omega * x**2
 
 	overlap = []
 
@@ -78,23 +79,24 @@ def func( t, y, args ):
 	for i in range( args[2] ):
 		ydot[i] = y[ args[2] + i ] / args[0]
 		ydot[i+args[2]] = -args[0] * args[1]**2 * y[ i ] 
-		ydot[i+2*args[2]] = -1j*( 0.5 * args[1] - lagrangian( y[ i ], y[ args[2] + i ], args[0], args[1] ) )*y[ 2 * args[2] + i ]
+		ydot[i+2*args[2]] = -1j * ( 0.5 * args[1] + lagrangian( y[ i ], y[ args[2] + i ], args[0], args[1] ) ) * y[ 2 * args[2] + i ]
 
 	return ydot
 	
 
-A = 3.56072
+#A = 3.56072
+A = 0.25
 m = 1.0
 omega = 1.0
 r = 10
 n = 2
 norm = m * omega / np.pi
 
-q = [A, -A, -A, A, 2*A, 0.0, -2*A, 0.0]
-p = [A, A, -A, -A, 0.0, 2*A, 0.0, -2*A]
+#q = [A, -A, -A, A, 2*A, 0.0, -2*A, 0.0]
+#p = [A, A, -A, -A, 0.0, 2*A, 0.0, -2*A]
 
-#q = [A, 0.0, -A, 0.0]
-#p = [0.0, A, 0.0, -A]
+q = [A, 0.0, -A, 0.0]
+p = [0.0, A, 0.0, -A]
 
 if len(q) == len(p):
 	N = len(q)
@@ -123,7 +125,7 @@ if key == 0:
 	l = np.sqrt(2 * e.real / m / omega**2)
 	x = np.linspace(-l-5,l+5,1000)
 	ax = plt.gca()
-	ax.set_ylim([e.real - 0.5, e.real + 0.5])
+	ax.set_ylim([e.real - 1.5, e.real + 1.5])
 	ax.set_xlim( [ -l - 5, l + 5 ] )
 	ax.plot(x,[0.5 * m * omega**2 * _**2 for _ in x])
 	psi = [0]*len(x)
