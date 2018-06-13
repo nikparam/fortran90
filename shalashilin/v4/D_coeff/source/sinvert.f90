@@ -20,12 +20,12 @@ SUBROUTINE inverse(NEQ, S, SI)
 
 	Sdm(1:NEQ,1:NEQ) = (0.0D0, 0.0D0)
 	DO i = 1, NEQ
-!		IF ( ABS( Sd(i) ) .LT. ( 64.0D0 * 10.0D-8 ) ) THEN
+		IF ( ABS( Sd(i) ) .LT. ( 1.0D0 * 1.0D-5 ) ) THEN
 !			Sdm(i,i) = Sd(i) + 10.0D-8 * EXP( -Sd(i) * 10.0D8)
-!			Sdm(i,i) = Sd(i) / ( Sd(i) * Sd(i) + 1e-8 )
-!		ELSE
+			Sdm(i,i) = Sd(i) / ( Sd(i) * Sd(i) + 1e-5 )
+		ELSE
 			Sdm(i,i) = 1.0D0 / Sd(i)
-!		END IF
+		END IF
 	END DO
 
 	SI = MATMUL( TRANSPOSE( CONJG( VT ) ), MATMUL( Sdm, TRANSPOSE( CONJG( U ) ) ) )

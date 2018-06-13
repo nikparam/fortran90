@@ -13,11 +13,6 @@ SUBROUTINE overlap(NEQ, x, y, const, M)
 	c(1:NEQ,1:NEQ) = SPREAD(y(1:NEQ),1,NEQ) + SPREAD(CONJG(y(1:NEQ)),2,NEQ)
 	e(1:NEQ,1:NEQ) = 0.25D0 * b**2 / a + c
 
-
-!	DO i = 1, NEQ
-!		WRITE(*,*) e(i,:)
-!	END DO
-
 	M(1:NEQ,1:NEQ) = (0.0D0, 0.0D0)
 	DO i = 1, NEQ
 	        DO j = 1, NEQ
