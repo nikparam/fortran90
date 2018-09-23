@@ -1,18 +1,18 @@
-SUBROUTINE hamiltonian(NumG, key, ksi, eta, omega, params, npts, x, wts, dE, S, H, L, M1)
+SUBROUTINE hamiltonian(NumG, key, ksi, eta, omega, params, npts, x, wts, dE, S, H, L, M1, M2)
 
 	IMPLICIT NONE
 
 	INTEGER, INTENT(IN) :: NumG, key, npts
 	DOUBLE PRECISION, INTENT(IN) :: omega(NumG), params(15), dE, x(npts), wts(npts)
 	DOUBLE COMPLEX, INTENT(IN) ::  ksi(NumG), eta(NumG), S(NumG,NumG)
-	DOUBLE COMPLEX, INTENT(OUT) :: H(NumG,NumG), L(NumG,NumG), M1(NumG,NumG)
+	DOUBLE COMPLEX, INTENT(OUT) :: H(NumG,NumG), L(NumG,NumG), M1(NumG,NumG), M2(NumG,NumG)
 
 	INTEGER :: i, j
 	DOUBLE PRECISION :: a(NumG,NumG), V(NumG), dV(NumG), d2V(NumG), d3V(NumG), &
 			    left_boundary, right_boundary, new_x(npts)
 	DOUBLE COMPLEX ::  b(NumG,NumG), &
 			   B1(NumG,NumG), B2(NumG,NumG), B3(NumG,NumG), &
-			   M2(NumG,NumG), M3(NumG,NumG), &
+			   M3(NumG,NumG), &
 			   X0(NumG), X1(NumG), X2(NumG), X3(NumG), &
 			   Vmatrix(NumG,NumG)
 

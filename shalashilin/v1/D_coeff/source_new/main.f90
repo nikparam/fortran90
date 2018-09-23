@@ -14,7 +14,7 @@ PROGRAM Dcoeff
 			    T, TOUT, MAXT, &
 			    RTOL, ATOL, &
 			    junk(6), params(15), m, Step, &
-			    N, E, LE, dE
+			    N, E, LE, dE, q_0, p_0, q_square
 
  	DOUBLE COMPLEX :: DUMMY(1,1)
 
@@ -23,7 +23,7 @@ PROGRAM Dcoeff
 
 	DOUBLE COMPLEX, ALLOCATABLE :: Y(:), ksi(:), eta(:), &
 				       S(:,:), H(:,:), &
-				       M1(:,:), L(:,:), &
+				       M1(:,:), M2(:,:), L(:,:), &
 				       ZWORK(:), RPAR(:), &
 				       R(:,:) 
 
@@ -37,7 +37,7 @@ PROGRAM Dcoeff
 	READ(10,*) m
 
 	ALLOCATE(Y(NumG), omega(NumG), phase(NumG), STAT=astatus)
-	ALLOCATE(S(NumG,NumG), H(NumG,NumG), M1(NumG,NumG), L(NumG,NumG), R(NumG,NumG), STAT=astatus)
+	ALLOCATE(S(NumG,NumG), H(NumG,NumG), M1(NumG,NumG), M2(NumG,NumG), L(NumG,NumG), R(NumG,NumG), STAT=astatus)
 
 	DO i=1,NumG
 		READ(10,*) omega(i), Y(i)
@@ -98,6 +98,26 @@ PROGRAM Dcoeff
 	OPEN(UNIT = 16, FILE = 'D_coeff.out', FORM = 'FORMATTED', &
 	     STATUS = 'NEW', POSITION = 'APPEND', ACTION = 'WRITE')
 
+	INQUIRE(FILE = "qp_mean.out", EXIST = exists_D)
+	IF ( exists_D ) THEN
+		OPEN(UNIT = 17, FILE = 'qp_mean.out', FORM = 'FORMATTED', &
+		     STATUS = 'OLD', ACTION = 'WRITE')
+		CLOSE(UNIT = 17, STATUS = 'DELETE')
+	END IF
+
+	OPEN(UNIT = 17, FILE = 'qp_mean.out', FORM = 'FORMATTED', &
+	     STATUS = 'NEW', POSITION = 'APPEND', ACTION = 'WRITE')
+
+	INQUIRE(FILE = "width.out", EXIST = exists_D)
+	IF ( exists_D ) THEN
+		OPEN(UNIT = 18, FILE = 'width.out', FORM = 'FORMATTED', &
+		     STATUS = 'OLD', ACTION = 'WRITE')
+		CLOSE(UNIT = 18, STATUS = 'DELETE')
+	END IF
+
+	OPEN(UNIT = 18, FILE = 'width.out', FORM = 'FORMATTED', &
+	     STATUS = 'NEW', POSITION = 'APPEND', ACTION = 'WRITE')
+
 	CALL CPU_TIME(t_start)
 
 	SELECT CASE ( key )
@@ -128,8 +148,16 @@ PROGRAM Dcoeff
 
 		CALL change_var( NumG, q, p, ksi, eta, omega, phase )
 		CALL overlap(NumG, ksi, eta, omega, S)
-		CALL hamiltonian(NumG, key, ksi, eta, omega, params, npts, x, wts, dE, S, H, L, M1)
+		CALL hamiltonian(NumG, key, ksi, eta, omega, params, npts, x, wts, dE, S, H, L, M1, M2)
 		CALL coeff_matrix( NumG, m, params, omega, ksi, S, H, M1, R )
+
+		q_0 = DOT_PRODUCT( Y, MATMUL( M1, Y ) )
+		q_square = DOT_PRODUCT( Y, MATMUL( M2, Y ) )
+		p_0 = DOT_PRODUCT( Y, MATMUL( -DCMPLX(0.0D0,1.0D0) * ( -m * SPREAD( omega, 1, NumG ) * M1 + &
+									SPREAD( ksi, 1, NumG ) * S ) , Y ) )
+
+		WRITE(17,'(3F16.6)') T, q_0, p_0
+		WRITE(18,'(2F16.6)') T, q_square - q_0**2
 
 		N = DOT_PRODUCT( Y, MATMUL( S, Y ) )
 		E = DOT_PRODUCT( Y, MATMUL( H, Y ) ) / N
@@ -164,6 +192,7 @@ PROGRAM Dcoeff
 
 	CLOSE( UNIT = 15 )
 	CLOSE( UNIT = 16 )
+	CLOSE( UNIT = 17 )
 
 	WRITE(6,55) ( t_finish - t_start )
 55	FORMAT('CPU time= ', F10.4)

@@ -51,8 +51,8 @@ PROGRAM Dcoeff
 	T = 0.0D0
 	TOUT = Step
 	ITOL = 1
-	RTOL = 1.0D-13
-	ATOL = 1.0D-13
+	RTOL = 1.0D-15
+	ATOL = 1.0D-15
 	ITASK = 1
 	ISTATE = 1
 	IOPT = 0
