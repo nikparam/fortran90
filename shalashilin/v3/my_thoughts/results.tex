@@ -1,0 +1,74 @@
+\documentclass[a4paper,14pt]{extarticle}
+% Стандартные формульные пакеты
+\usepackage{float,amsmath,esint,amsfonts,wrapfig,bbm}
+\usepackage{indentfirst}
+\usepackage[usenames]{color}
+\usepackage{multirow}
+%выставляем поля
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+% Русский текст в формулах
+\usepackage{mathtext}
+% Подключение русского языка
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage[utf8]{inputenc}
+% Рисунки
+\usepackage{graphicx,caption,subcaption}
+% Landscape page
+\usepackage{lscape}
+
+\usepackage{gnuplottex}
+
+\renewcommand{\arraystretch}{1.1}
+
+\newcommand{\mymean}[3]{\left\langle #1 \left| #2 \right| #3 \right\rangle}
+\newcommand{\myint}[2]{\langle #1 | #2 \rangle}
+\newcommand{\myexp}[1]{\text{exp}\left( #1 \right)}
+\newcommand{\myl}[0]{\mathit{L}}
+\begin{document}
+\section{Гармонический осциллятор}
+
+\subsection{Нет усреднения}
+\input{1.tex}
+
+Базис --- три волновых пакета: $\{q_k\}_{k=1}^3 = \{0, \pm 0.2\},\ \langle p\rangle = \sqrt{2}$.
+Частота потенциала $=$ частоте пакета $= 1$
+
+\input{pic1.tex}
+
+\newpage
+
+\subsection{Усреднение импульса --- полное усреднение градиента}
+\input{2.tex}
+
+Базис --- три волновых пакета: $\{q_k\}_{k=1}^3 = \{0, \pm 0.2\},\ \langle p\rangle = \sqrt{2}$.
+Частота потенциала $=$ частоте пакета $= 1$
+\input{pic2.tex}
+
+\newpage
+
+\subsection{Средний импульс --- локальное усреднение градиента}
+\input{3.tex}
+
+Базис --- три волновых пакета: $\{q_k\}_{k=1}^3 = \{0, \pm 0.2\},\ \langle p\rangle = \sqrt{2}$.
+Частота потенциала $=$ частоте пакета $= 1$
+\input{pic3.tex}
+
+\newpage
+
+\section{Эксперименты с частотой потенциала}
+Пусть частота потенциала $\neq$ частота пакета. 
+При сохранении параметров базисных функций возьмем частоту гармонического осциллятора равной $0.1$
+
+\subsection{Нет усреднения}
+\input{pic1_1.tex}
+\newpage
+
+\subsection{Усреднение импульса --- полное усреднение градиента}
+\input{pic2_1.tex}
+\newpage
+
+\subsection{Средний импульс --- локальное усреднение градиента}
+\input{pic3_1.tex}
+
+\end{document}

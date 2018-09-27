@@ -143,8 +143,8 @@ PROGRAM Dcoeff
 		CALL overlap(NumG, ksi, eta, omega, S)
 		CALL hamiltonian(NumG, key, ksi, eta, omega, params, npts, x, wts, dE, S, H, L, M1, M2)
 
-!		q_0 = DOT_PRODUCT( Y, MATMUL( M1, Y ) )
-		q_0 = DOT_PRODUCT( Y, MATMUL( S * SPREAD( q, 1, NumG ) , Y ) )
+		q_0 = DOT_PRODUCT( Y, MATMUL( M1, Y ) )
+!		q_0 = DOT_PRODUCT( Y, MATMUL( S * SPREAD( q, 1, NumG ) , Y ) )
 
 		width = DOT_PRODUCT( Y, MATMUL(M2, Y) ) - ( DOT_PRODUCT( Y, MATMUL(M1, Y) ) )**2
 
@@ -162,7 +162,7 @@ PROGRAM Dcoeff
 
 		WRITE(17,'(F16.6,100F16.6)') T, q_next, p_0_next
 
-		WRITE(15,35) T, N, E, LE, 0.5 * omega(0) * q_0**2 + 0.5 * p_0**2
+		WRITE(15,35) T, N, E, LE	
 		WRITE(16,25) T, Y(:), (DBLE(Y(:))**2 + DIMAG(Y(:))**2), SUM(DBLE(Y(:))**2 + DIMAG(Y(:))**2)
 
 		RPAR(1:LRP) = RESHAPE( R, (/ NumG**2 /) )

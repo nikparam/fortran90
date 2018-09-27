@@ -1,0 +1,46 @@
+Пускай все волновые пакеты движутся с одинаковым импульсом, изменение которого расчитывается в центре функции $|\Psi\rangle$
+$$|g_k\rangle = N\myexp{\frac{1}{\hbar}\left(-\frac{1}{2}m\omega(x-q_k)^2+i\langle p\rangle x\right)} = %
+		 \myexp{\frac{1}{\hbar}\left(-\frac{1}{2}m\omega x^2 + \xi_k x + \eta_k\right)}$$
+$$\xi_k = m\omega q_k + i\langle p\rangle, \eta_k = \hbar\ln N - \frac{1}{2}m\omega q_k^2$$
+$$\dot{\xi}_k = m\omega \dot{q}_k+i\langle\dot{p} \rangle = %
+	         \omega\langle p\rangle - i\left\langle\frac{dV}{dx}\right\rangle$$
+$$\left\langle\frac{dV}{dx}\right\rangle = %
+  m\omega^2\langle x\rangle %
+= \sum_{m,k}D_m^*D_k\mymean{g_m}{x}{g_k}=%
+  \sum_{m,k}D_m^*D_k\mathbbm{S}_{mk}\frac{q_m+q_k}{2}$$
+$$\dot{\eta}_k = -m\omega q_k\dot{q}_k = -\omega q_k\langle p\rangle$$
+Матричные элементы примут вид:
+\begin{enumerate}
+\item матрица перекрывания:
+$$\mathbbm{S}_{mk}=\sqrt{\frac{\hbar\pi}{m\omega}}\myexp{\frac{1}{\hbar}\left(\frac{(m\omega q_k+m\omega q_m)^2}{4m\omega}+%
+									      2\hbar\ln N-\frac{1}{2}m\omega(q_k^2+q_m^2)\right)}=$$
+$$=\myexp{\frac{1}{\hbar}\left(\frac{1}{4}m\omega(q_m+q_k)^2-\frac{1}{2}m\omega(q_m^2+q_k^2)\right)}=$$
+$$=\myexp{-\frac{m\omega}{4\hbar}(q_m-q_k)^2}$$
+\item матрица первых моментов:
+$$\mymean{g_m}{x}{g_k}=\frac{q_m+q_k}{2}\mathbbm{S}_{mk}$$
+\item матрица вторых моментов:
+$$\mymean{g_m}{x^2}{g_k}=\left(\frac{\hbar}{2m\omega}+\left(\frac{q_m+q_k}{2}\right)^2\right)\mathbbm{S}_{mk}$$
+\item матрица $\tau$:
+$$\tau_{mk} = \myint{g_m}{\dot{g}_k}=\frac{1}{\hbar}\left(\dot{\eta}_k+\dot{\xi}_k\frac{(q_k+q_m)}{2}\right)\mathbbm{S}_{mk}=$$
+$$=\frac{1}{\hbar}\left(-\omega q_k\langle p\rangle+\frac{1}{2}(\omega\langle p\rangle-im\omega^2\langle x\rangle)(q_m+q_k)\right)\mathbbm{S}_{mk}=$$
+$$=\frac{1}{\hbar}\left(\frac{1}{2}\omega\langle p\rangle(q_m-q_k) - \frac{i}{2}m\omega^2\langle x\rangle(q_m+q_k)\right)\mathbbm{S}_{mk}$$
+\item матрица оператора Гамильтона:
+$$\mathbbm{H}_{mk} = \left(\frac{\hbar\omega}{2}+\frac{(m\omega q_m-i\langle p\rangle)(m\omega q_k+i\langle p\rangle)}{2m}\right)\mathbbm{S}_{mk}=$$
+$$=\left(\frac{\hbar\omega}{2}+\frac{1}{2}m\omega^2 q_mq_k+\frac{\langle p\rangle^2}{2m}+\frac{i}{2}\omega\langle p\rangle(q_m-q_k)\right)\mathbbm{S}_{mk}$$
+\end{enumerate}
+
+Соберем матричные элементы:
+$$\mathbbm{H}_{mk}-i\hbar\tau_{mk}=\left(\frac{\hbar\omega}{2}+\frac{1}{2}m\omega^2(q_mq_k-\langle x\rangle(q_m+q_k))+\frac{\langle p\rangle^2}{2m}\right)\mathbbm{S}_{mk}$$
+Таким образом, матрица $\mathbbm{H}-i\hbar\tau$ действительна.
+$$\dot{\vec{D}}=-\frac{i}{\hbar}\mathbbm{S}^{-1}(\mathbbm{H}-i\hbar\tau)\vec{D}$$
+$$\myint{\Psi}{\Psi}=\vec{D}^{\dagger}\mathbbm{S}\vec{D},\ %
+  \frac{d}{dt}\myint{\Psi}{\Psi}=2Re(\vec{D}^{\dagger}\mathbbm{S}\dot{\vec{D}})+\vec{D}^{\dagger}\dot{\mathbbm{S}}\vec{D}$$
+$$\vec{D}^{\dagger}\mathbbm{S}\dot{\vec{D}}=%
+  -\frac{i}{\hbar}\vec{D}^{\dagger}\mathbbm{S}\mathbbm{S}^{-1}(\mathbbm{H}-i\hbar\tau)\vec{D}=%
+  -\frac{i}{\hbar}\vec{D}^{\dagger}(\mathbbm{H}-i\hbar\tau)\vec{D}$$
+Так как $(\mathbbm{H}-i\hbar\tau)$ действительна, то $\vec{D}^{\dagger}\mathbbm{S}\dot{\vec{D}}$ --- чисто мнимое число, а его действительная часть $=0$.
+$$\dot{\mathbbm{S}}_{mk}= \myint{\dot{g}_m}{g_k}+\myint{g_m}{\dot{g}_k}=$$
+$$=\frac{1}{\hbar}\mathbbm{S}_{mk}\left(\dot{\eta}_m^*+\dot{\eta}_k+\frac{1}{2}(\dot{\xi}_m^*+\dot{\xi}_k)(q_m+q_k)\right)=$$
+$$=\frac{1}{\hbar}\mathbbm{S}_{mk}\left(-\omega\langle p\rangle(q_m+q_k)+\omega\langle p\rangle(q_m+q_k)\right)=0$$
+Тогда $\frac{d}{dt}\myint{\Psi}{\Psi} = 0$
+
