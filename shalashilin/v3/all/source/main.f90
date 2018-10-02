@@ -69,7 +69,7 @@ PROGRAM Dcoeff
 
 	phase(1:NumG) = 0.25D0 * DLOG(m * omega(1:NumG) / (4.0D0 * DATAN(1.0D0)))
 
-	IF ( dE .GT. 0.0D0 ) THEN
+	IF ( mean .GT. 0.0D0 .OR. dE .GT. 0.D0 ) THEN
 		p(1:NumG) =  DSQRT( 2 * m * dE )
 	END IF
 
