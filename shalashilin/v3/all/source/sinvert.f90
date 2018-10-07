@@ -1,8 +1,9 @@
-SUBROUTINE inverse(NumG, S, SI)
+SUBROUTINE inverse(NumG, lambda, S, SI)
 
 	IMPLICIT NONE
 
 	INTEGER, INTENT(IN) :: NumG
+	DOUBLE PRECISION, INTENT(IN) :: lambda
 	DOUBLE COMPLEX, INTENT(IN) :: S(NumG,NumG)
 	DOUBLE COMPLEX, INTENT(OUT) :: SI(NumG,NumG)
 
@@ -26,13 +27,8 @@ SUBROUTINE inverse(NumG, S, SI)
 
 	Sdm(1:NumG,1:NumG) = (0.0D0, 0.0D0)
 	DO i = 1, NumG
-		IF ( ABS( Sd(i) ) .LT. 1.0D-7 ) THEN
-!			Sdm(i,i) = 1 / (Sd(i) + 1.0D-4 * EXP( -Sd(i) * 1.0D4))
-!			Sdm(i,i) = Sd(i) / ( Sd(i) * Sd(i) + 1e-2 )
-			Sdm(i,i) = 0.0D0
-		ELSE
-			Sdm(i,i) = 1.0D0 / Sd(i)
-		END IF
+		Sdm(i,i) = Sd(i) / ( Sd(i) * Sd(i) + lambda**2 )
+!		Sdm(i,i) = 1.0D0 / Sd(i)
 	END DO
 
 	SI = MATMUL( TRANSPOSE( CONJG( VT ) ), MATMUL( Sdm, TRANSPOSE( CONJG( U ) ) ) )

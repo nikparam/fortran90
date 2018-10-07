@@ -14,7 +14,7 @@ PROGRAM Dcoeff
 			    T, TOUT, MAXT, &
 			    RTOL, ATOL, &
 			    junk(6), params(15), m, Step, V, &
-			    N, E, LE, dE, q_0, q_0_square, p_0, width
+			    N, E, LE, dE, q_0, q_0_square, p_0, width, lambda
 
  	DOUBLE COMPLEX :: DUMMY(1,1)
 
@@ -35,6 +35,7 @@ PROGRAM Dcoeff
 	     FORM = 'FORMATTED', ACTION = 'READ')
 	READ(10,*) mean
 	READ(10,*) switch, key
+	READ(10,*) lambda
 	READ(10,*) NumG, MAXT, Step
 	READ(10,*) dE
 	READ(10,*) m
@@ -155,6 +156,7 @@ PROGRAM Dcoeff
 	RPAR(2*NumG+2:2*NumG+16) = params(1:15)
 	RPAR(2*NumG+17:2*NumG+16+npts) = x(1:npts)
 	RPAR(2*NumG+17+npts:2*NumG+16+2*npts) = wts(1:npts)
+	RPAR(2*NumG+17+2*npts) = lambda
 
 	IWORK(6) = 1000
 	DO 55 WHILE ( TOUT .LE. MAXT )

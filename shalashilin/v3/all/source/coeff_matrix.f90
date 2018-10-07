@@ -1,10 +1,10 @@
-SUBROUTINE coeff_matrix( NumG, mean, m, params, omega, ksi, q_0, S, H, M1, R )
+SUBROUTINE coeff_matrix( NumG, mean, m, params, omega, lambda, ksi, q_0, S, H, M1, R )
 
 	IMPLICIT NONE
 
 	INTEGER, INTENT(IN) :: NumG, mean
 
-	DOUBLE PRECISION, INTENT(IN) :: m, params(15), omega(NumG), q_0
+	DOUBLE PRECISION, INTENT(IN) :: m, params(15), omega(NumG), q_0, lambda
 
 	DOUBLE COMPLEX, INTENT(IN) :: ksi(NumG), S(NumG,NumG), &
 				      H(NumG,NumG), M1(NumG,NumG)
@@ -13,8 +13,8 @@ SUBROUTINE coeff_matrix( NumG, mean, m, params, omega, ksi, q_0, S, H, M1, R )
 	INTEGER :: i, j
 	DOUBLE PRECISION :: T, dV(NumG)
 	DOUBLE COMPLEX :: dksi(NumG), deta(NumG), &
-			  SI(NumG,NumG), &
-			  z_zdot(NumG,NumG)
+			  z_zdot(NumG,NumG), SI(NumG,NumG), &
+			  A(NumG,NumG)
 
 	IF ( mean .EQ. 0 ) THEN
 		DO i = 1, NumG
@@ -29,11 +29,12 @@ SUBROUTINE coeff_matrix( NumG, mean, m, params, omega, ksi, q_0, S, H, M1, R )
 
 	dksi(1:NumG) = (/ ( DCMPLX( omega(i) * DIMAG(ksi(i)), -dV(i) ), i=1,NumG ) /)
 	deta(1:NumG) = (/ ( DCMPLX( -DBLE( ksi(i)/m ) * DIMAG(ksi(i)), 0.0 ), i=1,NumG ) /)
-	CALL inverse(NumG, S, SI)
+	CALL inverse(NumG, lambda, S, SI)
 
 	z_zdot(:,:) = M1 * SPREAD( dksi, 1, NumG ) + S * SPREAD( deta, 1, NumG )
 
-	R = -( 0.0D0, 1.0D0 ) *  MATMUL( SI, H - (0.0D0, 1.0D0) * z_zdot )
+	A = -( 0.0D0, 1.0D0 ) * ( H - (0.0D0, 1.0D0) * z_zdot )
+	R = MATMUL( SI, A )
 
 20 	FORMAT( 100("("F14.6,SP,F14.6,"i) ") )
 
