@@ -25,6 +25,15 @@ SUBROUTINE inverse(NumG, lambda, S, SI)
 	TEMP(:,:) = S(:,:)
 	CALL ZGESDD( 'A', NumG, NumG, TEMP, NumG, Sd, U, NumG, VT, NumG, WORK, LW, RWORK, IWORK, INFO )
 
+	IF ( INFO .NE. 0 ) THEN
+		WRITE(*,*) 'Something went wrong'
+		WRITE(*,*) '____________________'
+		DO i = 1, NumG
+			WRITE(*,*) S(i,:)
+		END DO
+		WRITE(*,*) '____________________'
+	END IF 
+
 	Sdm(1:NumG,1:NumG) = (0.0D0, 0.0D0)
 	DO i = 1, NumG
 		Sdm(i,i) = Sd(i) / ( Sd(i) * Sd(i) + lambda**2 )

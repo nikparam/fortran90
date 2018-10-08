@@ -7,7 +7,7 @@ SUBROUTINE FEXALL( N, T, Y, YDOT, RPAR, IPAR )
 	DOUBLE COMPLEX, INTENT(IN) :: Y(N)
 	DOUBLE COMPLEX, INTENT(OUT) :: YDOT(N)
 
-	INTEGER :: i, mean, key, NumG, npts
+	INTEGER :: i, mean, key, NumG, npts, IPIV( ipar(1) ), INFO
 	DOUBLE PRECISION :: m, params(15), q_0, lambda, &
 			    curvature, xi, xi_prime, rho, z_lambda(ipar(1))
 
@@ -19,8 +19,7 @@ SUBROUTINE FEXALL( N, T, Y, YDOT, RPAR, IPAR )
 			  S( IPAR(1), IPAR(1) ), H( IPAR(1), IPAR(1) ), &
 			  L( IPAR(1), IPAR(1) ), &
 			  M1( IPAR(1), IPAR(1) ), M2( IPAR(1), IPAR(1) ), &
-			  R( IPAR(1), IPAR(1) ), D( IPAR(1) ), A( IPAR(1), IPAR(1) ), &
-			  tmp( IPAR(1) ), SI( ipar(1), ipar(1) )
+			  R( IPAR(1), IPAR(1) ), D( IPAR(1) )
 
 	NumG = IPAR(1)
 	key = IPAR(2)
@@ -62,21 +61,6 @@ SUBROUTINE FEXALL( N, T, Y, YDOT, RPAR, IPAR )
 
 	YDOT(1:NumG) = p(1:NumG) / m
 	YDOT(NumG+1:2*NumG) = -dV(1:NumG)
-	YDOT(2*NumG+1:3*NumG) = MATMUL( R, D(1:NumG) )
-
-!	tmp = MATMUL( S, YDOT(2*NumG+1:3*NumG) ) - MATMUL( A, D )
-!	WRITE(6,'(3F16.6)') T, DBLE( DOT_PRODUCT( YDOT(2*NumG+1:3*NumG), YDOT(2*NumG+1:3*NumG) ) ), &
-!			       DBLE( DOT_PRODUCT( tmp, tmp ) )
-
-!	xi = DBLE( DOT_PRODUCT( YDOT(2*NumG+1:3*NumG), YDOT(2*NumG+1:3*NumG) ) )
-!	rho = DBLE( DOT_PRODUCT( tmp, tmp ) )
-!	z_lambda = MATMUL( SI, tmp )
-!	xi_prime = 4 * DOT_PRODUCT( YDOT(2*NumG+1:3*NumG), z_lambda ) / lambda
-!
-!	curvature = 2 * xi * rho / xi_prime * ( lambda**2 * xi_prime * rho + &
-!						2 * lambda * xi * rho + &
-!						lambda**4 * xi * xi_prime ) / ( lambda**2 * xi**2 + rho**2 )**1.5
-
-!	WRITE(6,'(2F20.8)') T, curvature
+	YDOT(2*NumG+1:3*NumG) = MATMUL( R, D )
 
 END SUBROUTINE FEXALL

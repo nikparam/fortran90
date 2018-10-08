@@ -29,7 +29,9 @@ SUBROUTINE coeff_matrix( NumG, mean, m, params, omega, lambda, ksi, q_0, S, H, M
 
 	dksi(1:NumG) = (/ ( DCMPLX( omega(i) * DIMAG(ksi(i)), -dV(i) ), i=1,NumG ) /)
 	deta(1:NumG) = (/ ( DCMPLX( -DBLE( ksi(i)/m ) * DIMAG(ksi(i)), 0.0 ), i=1,NumG ) /)
-	CALL inverse(NumG, lambda, S, SI)
+
+!	CALL inverse(NumG, lambda, S, SI)
+	CALL block_inverse(NumG, lambda, S, SI)
 
 	z_zdot(:,:) = M1 * SPREAD( dksi, 1, NumG ) + S * SPREAD( deta, 1, NumG )
 

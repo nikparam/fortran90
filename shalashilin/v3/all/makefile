@@ -1,4 +1,4 @@
-F = mpif90
+F = gfortran
 
 LD_FLAGS = -L/usr/lib/ -lblas -L/usr/lib/ -llapack 
 
@@ -10,6 +10,7 @@ SOURCE =  ./source/main.f90 \
           ./source/smatrix.f90 \
 	  ./source/hmatrix.f90 \
           ./source/sinvert.f90 \
+	  ./source/block_inverse.f90 \
           ./source/normalization.f90 \
 	  ./source/external_all.f90 \
           ../../../odepack/zvode.f \
