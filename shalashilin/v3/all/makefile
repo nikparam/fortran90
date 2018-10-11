@@ -13,6 +13,7 @@ SOURCE =  ./source/main.f90 \
 	  ./source/block_inverse.f90 \
           ./source/normalization.f90 \
 	  ./source/external_all.f90 \
+	  ./source/quadrature.f90 \
           ../../../odepack/zvode.f \
           ../../../odepack/zgesl.f \
           ../../../odepack/zgefa.f \

@@ -168,7 +168,6 @@ PROGRAM Dcoeff
 			   ZWORK, LZW, RWORK, LRW, IWORK, LIW, &
 			   DUMMY, MF, RPAR, IPAR)
 
-
 		q(1:NumG) = DBLE( Y(1:NumG) )
 		p(1:NumG) = DBLE( Y(NumG+1:2*NumG) )
 		D(1:NumG) = Y(2*NumG+1:3*NumG)

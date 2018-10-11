@@ -55,25 +55,8 @@ SUBROUTINE hamiltonian(NumG, key, ksi, eta, m, omega, params, npts, x, wts, S, H
 				  SPREAD( X2, 1, NumG ) * M2 + SPREAD( X3, 1, NumG ) * M3
 
 		CASE(1)
-			DO i = 1, NumG
-				DO j = i, NumG
-					left_boundary = MIN( (DBLE(ksi(i))/omega(i)/m) - 6 / DSQRT(m*omega(i)), &
-							     (DBLE(ksi(j))/omega(j)/m) - 6 / DSQRT(m*omega(j)) )
-					
-					right_boundary = MAX( (DBLE(ksi(i))/omega(i)/m) + 6 / DSQRT(m*omega(i)), &
-							      (DBLE(ksi(j))/omega(j)/m) + 6 / DSQRT(m*omega(j)) )
-			
-					new_x = shift_l( npts, x, left_boundary, right_boundary )
 
-					Vmatrix(i,j) = 0.5 * ( right_boundary - left_boundary ) * &
-						       SUM( wts * &
-							    CONJG( wave_packet(npts,new_x,ksi(i),eta(i),m,omega(i)) ) * &
-							    potential_map(npts,new_x,params) * &
-							    wave_packet(npts,new_x,ksi(j),eta(j),m,omega(j)) )
-					Vmatrix(j,i) = CONJG( Vmatrix(i,j) )
-
-				END DO
-			END DO
+			CALL quadrature(NumG, potential_energy, ksi, eta, x, wts, npts, m, omega, params, Vmatrix )
 
 !		CASE(2)
 !			DO i = 1, NumG
@@ -93,38 +76,6 @@ SUBROUTINE hamiltonian(NumG, key, ksi, eta, m, omega, params, npts, x, wts, S, H
 	H = H + Vmatrix
 
 	CONTAINS
-
-		FUNCTION wave_packet( npts, x, ksi, eta, m, omega )
-
-			INTEGER :: npts
-			DOUBLE PRECISION :: x(npts), omega, m
-			DOUBLE COMPLEX :: wave_packet(npts), ksi, eta
-
-			wave_packet(:) = ZEXP( -0.5 * m * omega * x(:) * x(:) + ksi * x(:) + eta )
-
-		END FUNCTION wave_packet
-
-		FUNCTION potential_map(npts, x, params)
-
-			INTEGER :: npts, i
-			DOUBLE PRECISION :: x(npts), params(15)
-			DOUBLE PRECISION :: potential_map(npts)
-
-			DO i = 1, npts			
-				CALL potential_energy( x(i), params, potential_map(i) )
-			END DO
-
-		END FUNCTION potential_map
-
-		FUNCTION shift_l( N, x, a, b )
-
-			INTEGER :: N
-			DOUBLE PRECISION :: x(N), a, b
-			DOUBLE PRECISION :: shift_l(N)
-
-			shift_l(:) = 0.5 * ( b - a ) * x(:) + 0.5 * ( a + b )
-
-		END FUNCTION shift_l
 
 !		FUNCTION contr_wave_packet( npts, x, ksi, eta )
 !

@@ -1,6 +1,6 @@
-0 									! type of averaging
+1 									! type of averaging
 13 1 									! potential type and <V> calculation
-0.25 									! lambda for regularization
+0.0 									! lambda for regularization
 2 3.0D1 1.0D-2 								! number of GWP, T_end and T_step
 0.0D0 									! delta E
 1.0D0 									! mass

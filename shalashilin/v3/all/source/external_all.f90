@@ -8,18 +8,19 @@ SUBROUTINE FEXALL( N, T, Y, YDOT, RPAR, IPAR )
 	DOUBLE COMPLEX, INTENT(OUT) :: YDOT(N)
 
 	INTEGER :: i, mean, key, NumG, npts, IPIV( ipar(1) ), INFO
-	DOUBLE PRECISION :: m, params(15), q_0, lambda, &
+	DOUBLE PRECISION :: m, params(15), lambda, &
 			    curvature, xi, xi_prime, rho, z_lambda(ipar(1))
 
 	DOUBLE PRECISION :: omega( IPAR(1) ), phase( IPAR(1) ), &
 			    x( IPAR(4) ), wts( IPAR(4) ), &
-			    q( IPAR(1) ), p( IPAR(1) ), dV( IPAR(1) )
+			    q( IPAR(1) ), p( IPAR(1) ), &
+			    dV( IPAR(1) ), dV_mean 
 
 	DOUBLE COMPLEX :: ksi( IPAR(1) ), eta( IPAR(1) ), &
 			  S( IPAR(1), IPAR(1) ), H( IPAR(1), IPAR(1) ), &
 			  L( IPAR(1), IPAR(1) ), &
 			  M1( IPAR(1), IPAR(1) ), M2( IPAR(1), IPAR(1) ), &
-			  R( IPAR(1), IPAR(1) ), D( IPAR(1) )
+			  R( IPAR(1), IPAR(1) ), D( IPAR(1) ), dV_matrix(ipar(1),ipar(1))
 
 	NumG = IPAR(1)
 	key = IPAR(2)
@@ -42,22 +43,18 @@ SUBROUTINE FEXALL( N, T, Y, YDOT, RPAR, IPAR )
 	CALL overlap(NumG, ksi, eta, m, omega, S)
 	CALL hamiltonian(NumG, key, ksi, eta, m, omega, params, npts, x, wts, S, H, L, M1, M2)
 
-	IF ( mean .EQ. 1 ) THEN
-		q_0 = DOT_PRODUCT( D, MATMUL( M1, D ) )
-	ELSE IF ( mean .EQ. 2 ) THEN
-		q_0 = DOT_PRODUCT( D, MATMUL( S * SPREAD( q, 1, NumG ) , D ) )
-	END IF
-
 	IF ( mean .EQ. 0 ) THEN
 		DO i = 1, NumG
 			CALL diff_potential_energy(q(i), params, dV(i))
 		END DO
 	ELSE
-		DO i = 1, NumG
-			CALL diff_potential_energy(q_0, params, dV(i))
-		END DO
-	END IF	
-	CALL coeff_matrix( NumG, mean, m, params, omega, lambda, ksi, q_0, S, H, M1, R )
+		CALL quadrature( NumG, diff_potential_energy, ksi, eta, x, wts, npts, m, omega, params, dV_matrix )
+
+		dV_mean = DOT_PRODUCT( D, MATMUL( dV_matrix, D ) )
+		dV = (/ ( dV_mean, i=1,NumG ) /)
+	END IF
+
+	CALL coeff_matrix( NumG, mean, m, params, omega, lambda, ksi, dV, S, H, M1, R )
 
 	YDOT(1:NumG) = p(1:NumG) / m
 	YDOT(NumG+1:2*NumG) = -dV(1:NumG)
