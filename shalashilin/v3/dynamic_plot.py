@@ -18,7 +18,7 @@ def _ffmt( i ):
 		return str(i)
 
 def _read( fname ):
-	return np.float_( [string.replace('D','E') for string in fname.readline().split()] )
+	return [ string.replace('D','E') for string in fname.readline().split() ]
 
 def _morse( x ):
 	return 0.05 * (1 - np.exp( -0.005 * (x - 200) ))**2
@@ -29,17 +29,23 @@ path_all = BASEDIR + '/all/'
 path_potential = BASEDIR + '/potential/'
 init_cond_file = open(path_all + 'init_cond.txt','r')
 
-mean = init_cond_file.readline()
+mean = init_cond_file.readline().split()[0]
 switch = np.float(init_cond_file.readline().split()[0])
+lambda_r = _read( init_cond_file )[0]
 
-NumG, Tmax, Tstep = _read( init_cond_file )
+NumG, Tmax, Tstep, = _read( init_cond_file )[0:3]
+dE = _read( init_cond_file )[0]
+m = _read( init_cond_file )[0]
 
-dE = _read( init_cond_file )
-m = _read( init_cond_file )
+NumG = int(NumG)
+Tmax = float(Tmax)
+Tstep = float(Tstep)
+dE = float(dE)
+m = float(m)
 
 omega = [np.float(init_cond_file.readline().split()[0].replace('D','E')) for _ in range(int(NumG))]
 
-x = np.linspace(-10,10,200)
+x = np.linspace(-5,40,200)
 
 start_time = time.time()
 
@@ -53,14 +59,15 @@ ax = plt.gca()
 ax.set_autoscale_on(True)
 ax.set_ylim([0,5])
 psi = [0]*len(x)
-ax.plot(x, [ 0.25 *  _**2 for _ in x])
+#ax.plot(x, [ 0.25 *  _**2 for _ in x])
+ax.plot(x, [np.exp(-_) for _ in x])
 
-current_plot1, current_plot2, current_plot3, current_plot4 = ax.plot( x, [abs(psi[_])**2 for _ in range(len(psi))], #
-								      x, [abs(psi[_])**2 for _ in range(len(psi))], #
-								      x, [abs(psi[_])**2 for _ in range(len(psi))], #
-								      x, [abs(psi[_])**2 for _ in range(len(psi))] )
+#current_plot1, current_plot2, current_plot3, current_plot4 = ax.plot( x, [abs(psi[_])**2 for _ in range(len(psi))], #
+#								      x, [abs(psi[_])**2 for _ in range(len(psi))], #
+#								      x, [abs(psi[_])**2 for _ in range(len(psi))], #
+#								      x, [abs(psi[_])**2 for _ in range(len(psi))] )
 
-#current_plot4, = ax.plot( x, [abs(psi[_])**2 for _ in range(len(psi))])
+current_plot4, = ax.plot( x, [abs(psi[_])**2 for _ in range(len(psi))])
 
 count = 0
 num = 0
@@ -82,13 +89,13 @@ for line in coeff_fin:
 		q[i] = np.float( qp_line.split()[i+1] )
 		p[i] = np.float( qp_line.split()[i+NumG+1] )
 
-	psi1 = _wave_packet(x, 1, m, omega, [ q[0] ], [ p[0] ], [ D_fmt[0] ])
-	psi2 = _wave_packet(x, 1, m, omega, [ q[1] ], [ p[1] ], [ D_fmt[1] ])
-	psi3 = _wave_packet(x, 1, m, omega, [ q[2] ], [ p[2] ], [ D_fmt[2] ])
+#	psi1 = _wave_packet(x, 1, m, omega, [ q[0] ], [ p[0] ], [ D_fmt[0] ])
+#	psi2 = _wave_packet(x, 1, m, omega, [ q[1] ], [ p[1] ], [ D_fmt[1] ])
+#	psi3 = _wave_packet(x, 1, m, omega, [ q[2] ], [ p[2] ], [ D_fmt[2] ])
 	psi4 = _wave_packet(x, NumG, m, omega, q, p, D_fmt)
-	current_plot1.set_ydata([ abs( psi1[i] ) / abs(D_fmt[0])  for i in range(len(psi))])
-	current_plot2.set_ydata([ abs( psi2[i] ) / abs(D_fmt[1])  for i in range(len(psi))])
-	current_plot3.set_ydata([ abs( psi3[i] ) / abs(D_fmt[2])  for i in range(len(psi))])
+#	current_plot1.set_ydata([ abs( psi1[i] ) / abs(D_fmt[0])  for i in range(len(psi))])
+#	current_plot2.set_ydata([ abs( psi2[i] ) / abs(D_fmt[1])  for i in range(len(psi))])
+#	current_plot3.set_ydata([ abs( psi3[i] ) / abs(D_fmt[2])  for i in range(len(psi))])
 	current_plot4.set_ydata([ abs( psi4[i] )  for i in range(len(psi))])
 	ax.autoscale_view(True,True)
 	txt = ax.text(3.0, 0.075, str(t))

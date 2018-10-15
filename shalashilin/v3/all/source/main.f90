@@ -14,7 +14,8 @@ PROGRAM Dcoeff
 			    T, TOUT, MAXT, &
 			    RTOL, ATOL, &
 			    junk(6), params(15), m, Step, V, &
-			    N, E, LE, dE, q_0, q_0_square, p_0, width, lambda
+			    N, E, LE, KE, VE, &
+			    dE, q_0, q_0_square, p_0, width, lambda
 
  	DOUBLE COMPLEX :: DUMMY(1,1)
 
@@ -129,18 +130,10 @@ PROGRAM Dcoeff
 
 	CALL CPU_TIME(t_start)
 
-	IF ( key .EQ. 1 ) THEN
-		npts = 100
-		ALLOCATE( x(1:npts), wts(1:npts) )
-		CALL p_quadrature_rule ( npts, x, wts )	
-	ELSE
-		npts = 1
-		ALLOCATE( x(1:npts), wts(1:npts) )
-		x(:) = 0.0
-		wts(:) = 0.0
-
-	ENDIF
-
+	npts = 100
+	ALLOCATE( x(1:npts), wts(1:npts) )
+	CALL p_quadrature_rule ( npts, x, wts )	
+	
 	Y(1:NumG) = (/ ( DCMPLX( q(i), 0.0D0 ), i = 1, NumG ) /)
 	Y(NumG+1:2*NumG) = (/ ( DCMPLX( p(i), 0.0D0 ), i = 1, NumG ) /)
 	IPAR(1) = NumG
@@ -179,6 +172,8 @@ PROGRAM Dcoeff
 		N = DOT_PRODUCT( D, MATMUL( S, D ) )
 		E = DOT_PRODUCT( D, MATMUL( H, D ) ) / N
 		LE = DOT_PRODUCT( D, MATMUL( L, D ) ) / N
+		KE = 0.5 * DOT_PRODUCT( D, MATMUL( H + L, D ) ) / N
+		VE = 0.5 * DOT_PRODUCT( D, MATMUL( H - L, D ) ) / N
 		q_0 = DOT_PRODUCT( D, MATMUL( M1, D ) )
 		CALL potential_energy(q_0,params,V)
 		p_0 = DOT_PRODUCT( D, MATMUL( -DCMPLX(0.0D0,1.0D0) * ( - m * SPREAD( omega, 1, NumG ) * M1 + &
@@ -186,12 +181,12 @@ PROGRAM Dcoeff
 		q_0_square = DOT_PRODUCT( D, MATMUL( M2, D ) )
 		width = q_0_square - q_0**2
 		WRITE(14,'(3F16.6)') T, q_0, p_0
-		WRITE(15,25) T, N, E, LE, V + 0.5 * p_0**2 / m
+		WRITE(15,25) T, N, E, KE, VE, LE, V + 0.5 * p_0**2 / m, SUM( (/ ( H(i,i), i=1,NumG ) /) )
 		WRITE(17,35) T, q, p
 		WRITE(16,45) T, D, ABS(D)
 		WRITE(18,'(2F16.6)') T, width
 
-25		FORMAT(F16.6,1X,F16.8,'  ',F16.8,' ',F16.8,' ',F16.8)
+25		FORMAT(F16.6,1X,6F16.8,2F16.8)
 35 		FORMAT(F16.6,10F16.6,'      ',10F16.6)
 45		FORMAT(F16.6,1X,100F16.6)
 		IF (ISTATE .EQ. -1) THEN

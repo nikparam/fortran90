@@ -1,0 +1,63 @@
+Начнем с рассмотрения базиса из одного волнового пакета.
+Изучим вопрос сохранения энергии:
+$$<V> = \left(\frac{m\omega}{\hbar\pi}\right)^{1/2}%
+	\int \myexp{\frac{1}{\hbar}\left(-m\omega x^2 + %
+					 \left(2\mathit{Re}(\xi)-%
+					 \frac{\hbar}{l}\right)x + %
+					 2\mathit{Re}(\eta)\right)}\,dx=$$
+$$=\left(\frac{m\omega}{\hbar\pi}\right)^{1/2}%
+   \int \myexp{\frac{1}{\hbar}\left(-m\omega x^2 + %
+					 \left(2m\omega q-%
+					 \frac{\hbar}{l}\right)x - %
+					 m\omega q^2\right)}\,dx=$$
+$$=\left(\frac{m\omega}{\hbar\pi}\right)^{1/2}%
+   \myexp{-\frac{m\omega}{\hbar} q^2}\int\myexp{-\frac{m\omega}{\hbar}%
+						\left( x^2 - 2\left(q - %
+						    \frac{\hbar}{2ml\omega}%
+						\right)x
+						\right)}\,dx=$$
+$$=\myexp{-\frac{m\omega}{\hbar}\left(q^2-%
+				     \left(q-%
+				     \frac{\hbar}{2ml\omega}%
+				     \right)^2\right)}=$$
+$$=\myexp{-\frac{q}{l}+\frac{\hbar}{4ml^2\omega}}$$
+$$<T> = \frac{\hbar\omega}{2}+%
+	\frac{|\xi|^2}{2m}-%
+	\frac{1}{2}m\omega^2%
+	\left(\frac{\hbar}{2m\omega}+%
+	\left(\frac{\mathit{Re}(\xi)}{m\omega}%
+	\right)^2\right)=$$
+$$=\frac{\hbar\omega}{4}+%
+   \frac{m^2\omega^2q^2+p^2}{2m}-%
+   \frac{1}{2}m\omega^2q^2 = \frac{\hbar\omega}{4}+\frac{p^2}{2m}$$
+$$<H>'_t=<V>'_t+<T>'_t=\frac{p\dot{p}}{m}-%
+		       \frac{\dot{q}}{l}\myexp{-\frac{q}{l}+%
+					       \frac{\hbar}{4ml^2\omega}}=$$
+$$=\frac{p}{m}\left(\dot{p}-\frac{1}{l}\myexp{-\frac{q}{l}+%
+					      \frac{\hbar}{4ml^2\omega}}%
+	      \right)$$
+Если принять, что $\dot{p} = -V'_x(q)$, то получим
+$$<H>'_t=\frac{p}{lm}\myexp{-\frac{q}{l}}%
+	 \left(1-\myexp{\frac{\hbar}{4ml^2\omega}}\right)$$
+Если же принять, что $\dot{p}=-<V'_x>=<V>/l$, то получим $<H>'_t=0$
+
+Базис из двух функций:
+$$\mathbbm{V} = \left( \begin{matrix} %
+		\myexp{-\frac{q_1}{l}+\frac{\hbar}{4ml^2\omega}} & %
+		V_{12} \\ %
+		V_{12}^* & %
+		\myexp{-\frac{q_2}{l}+\frac{\hbar}{4ml^2\omega}} \\ %
+		\end{matrix} \right)$$
+$$\mathbbm{T} = \left( \begin{matrix} % 
+		       \frac{\hbar\omega}{4}+\frac{p_1^2}{2m} & %
+		       T_{12} \\ %
+		       T_{12}^* & %
+		       \frac{\hbar\omega}{4}+\frac{p_2^2}{2m} %
+		       \end{matrix} \right)$$
+
+Обобщая предыдущие рассуждения, предполагаем, 
+что среднее значение энергии теперь сохраняться не будет. 
+Однако, след марицы оператора Гамильтона все еще представляет собой сумму классических функций 
+Гамильтона отдельных пакетов и поправки. 
+Таким образом, след матрицы оператора Гамильтона будет сохраняться с течением времени.
+

@@ -43,9 +43,12 @@ SUBROUTINE FEXALL( N, T, Y, YDOT, RPAR, IPAR )
 	CALL overlap(NumG, ksi, eta, m, omega, S)
 	CALL hamiltonian(NumG, key, ksi, eta, m, omega, params, npts, x, wts, S, H, L, M1, M2)
 
+	CALL diff_potential_energy(q(1),params,dV(1))
+
 	IF ( mean .EQ. 0 ) THEN
+		CALL quadrature( NumG, diff_potential_energy, ksi, eta, x, wts, npts, m, omega, params, dV_matrix )
 		DO i = 1, NumG
-			CALL diff_potential_energy(q(i), params, dV(i))
+			dV(i) = DBLE( dV_matrix(i,i) )
 		END DO
 	ELSE
 		CALL quadrature( NumG, diff_potential_energy, ksi, eta, x, wts, npts, m, omega, params, dV_matrix )
@@ -54,7 +57,7 @@ SUBROUTINE FEXALL( N, T, Y, YDOT, RPAR, IPAR )
 		dV = (/ ( dV_mean, i=1,NumG ) /)
 	END IF
 
-	CALL coeff_matrix( NumG, mean, m, params, omega, lambda, ksi, dV, S, H, M1, R )
+	CALL coeff_matrix( NumG, m, params, omega, lambda, ksi, dV, S, H, M1, R )
 
 	YDOT(1:NumG) = p(1:NumG) / m
 	YDOT(NumG+1:2*NumG) = -dV(1:NumG)

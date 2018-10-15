@@ -34,6 +34,8 @@ SUBROUTINE inverse(NumG, lambda, S, SI)
 		WRITE(*,*) '____________________'
 	END IF 
 
+!	WRITE(*,*) Sd
+
 	Sdm(1:NumG,1:NumG) = (0.0D0, 0.0D0)
 	DO i = 1, NumG
 		Sdm(i,i) = Sd(i) / ( Sd(i) * Sd(i) + lambda**2 )

@@ -36,5 +36,5 @@ main_exp: $(SOURCE) ../potential/exp_potential.f90
 
 clean:
 
-	@rm -rf *.out *.o $(EXEC)
+	@rm -rf *.out *.o *.log $(EXEC)
 
