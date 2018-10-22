@@ -28,7 +28,7 @@ PROGRAM Dcoeff
 				       S(:,:), H(:,:), &
 				       M1(:,:), M2(:,:), L(:,:), &
 				       ZWORK(:), &
-				       R(:,:) 
+				       R(:,:), tmp(:) 
 
 	EXTERNAL :: FEXALL
 
@@ -44,6 +44,8 @@ PROGRAM Dcoeff
 	ALLOCATE(Y(3 * NumG), omega(NumG), phase(NumG), STAT=astatus)
 	ALLOCATE(q(NumG), p(NumG), D(NumG), ksi(NumG), eta(NumG), STAT=astatus)
 	ALLOCATE(S(NumG,NumG), H(NumG,NumG), M1(NumG,NumG), M2(NumG,NumG), L(NumG,NumG), R(NumG,NumG), STAT=astatus)
+	ALLOCATE(tmp(NumG))
+
 
 	DO i=1,NumG
 		READ(10,*) omega(i), Y(2*NumG+i), q(i), p(i)
@@ -181,12 +183,21 @@ PROGRAM Dcoeff
 		q_0_square = DOT_PRODUCT( D, MATMUL( M2, D ) )
 		width = q_0_square - q_0**2
 		WRITE(14,'(3F16.6)') T, q_0, p_0
-		WRITE(15,25) T, N, E, KE, VE, LE, V + 0.5 * p_0**2 / m, SUM( (/ ( H(i,i), i=1,NumG ) /) )
+
+		tmp = MATMUL( S, D )
+
+		WRITE(15,25) T, &
+			     N, &
+			     E, &
+			     KE, &
+			     VE, &
+			     LE, &
+			     SUM( (/ ( DBLE( H(i,i) ), i=1,NumG ) /) )
 		WRITE(17,35) T, q, p
 		WRITE(16,45) T, D, ABS(D)
 		WRITE(18,'(2F16.6)') T, width
 
-25		FORMAT(F16.6,1X,6F16.8,2F16.8)
+25		FORMAT(F16.6,1X,7F16.8)
 35 		FORMAT(F16.6,10F16.6,'      ',10F16.6)
 45		FORMAT(F16.6,1X,100F16.6)
 		IF (ISTATE .EQ. -1) THEN

@@ -6,12 +6,11 @@ SUBROUTINE coeff_matrix( NumG, m, params, omega, lambda, ksi, dV, S, H, M1, R )
 	DOUBLE PRECISION, INTENT(IN) :: m, params(15), omega(NumG), lambda, dV(NumG)
 	DOUBLE COMPLEX, INTENT(IN) :: ksi(NumG), S(NumG,NumG), &
 				      H(NumG,NumG), M1(NumG,NumG)
-	DOUBLE COMPLEX, INTENT(OUT) :: R(NumG,NumG)
+	DOUBLE COMPLEX, INTENT(OUT) :: R(NumG,NumG) 
 
 	INTEGER :: i, j
 	DOUBLE COMPLEX :: dksi(NumG), deta(NumG), &
-			  z_zdot(NumG,NumG), SI(NumG,NumG), &
-			  A(NumG,NumG)
+			  z_zdot(NumG,NumG), SI(NumG,NumG), A(NumG,NumG)
 
 	dksi(1:NumG) = (/ ( DCMPLX( omega(i) * DIMAG(ksi(i)), -dV(i) ), i=1,NumG ) /)
 	deta(1:NumG) = (/ ( DCMPLX( -DBLE( ksi(i)/m ) * DIMAG(ksi(i)), 0.0 ), i=1,NumG ) /)

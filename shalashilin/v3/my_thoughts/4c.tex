@@ -1,0 +1,80 @@
+Рассмотрим модифицированный след:
+$$\mathit{eTr}(\mathbbm{H})=\sum_{k=1}^N\mathbbm{H}_{kk}|D_k|^2$$
+$$\frac{d}{dt}\mathit{eTr}\mathbbm{H} = \sum_{k=1}^N\left(|D_k|^2\dot{\mathbbm{H}}_{kk}+%
+							 (\dot{D}_k^*D_k+D_k^*\dot{D}_k)\mathbbm{H}_{kk}\right)$$
+
+$$\dot{D}_k=-\frac{i}{\hbar}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{km}%
+					  (\mathbbm{H}_{mn}-i\hbar\tau_{mn})D_n$$
+
+$$\mathbbm{H}_{mn} = \mathbbm{S}_{mn}\left(\frac{\hbar\omega}{2}+\frac{\xi_m^*\xi_n}{2m}-%
+					   \frac{1}{2}m\omega^2\left(\frac{\hbar}{2m\omega}+\left(\frac{\xi_m^*+\xi_n}{2m\omega}\right)^2\right)\right)+
+		     \mymean{g_m}{V}{g_n}=$$
+$$=\mathbbm{S}_{mn}\left(\frac{\hbar\omega}{2}+\frac{1}{2m}(m^2\omega^2 q_mq_n+p^2+im\omega p(q_m-q_n))-%
+			 	\frac{\hbar\omega}{4}-\frac{1}{8}m\omega^2(q_m+q_k)^2\right)$$
+$$+\mymean{g_m}{V}{g_n}$$
+$$=\mathbbm{S}_{mn}\left(\frac{\hbar\omega}{4}-%
+			 \frac{1}{2}m\omega^2\left(\frac{q_m-q_n}{2}\right)^2+%
+			 \frac{p^2}{2m}+%
+			 \frac{i}{2}\omega p(q_m-q_n)\right)+\mymean{g_m}{V}{g_n}$$
+$$\tau_{mn} = \myint{g_m}{\dot{g_n}} = \frac{1}{\hbar}\mathbbm{S}_{mn}\left(\dot{\eta}_n+\dot{\xi}_n\frac{\xi_m^*+\xi_n}{2m\omega}\right)=$$
+$$=\frac{1}{\hbar}\mathbbm{S}_{mn}\left(-\omega q_np+(\omega p+i\dot{p})\frac{q_m+q_n}{2}\right)=%
+   \frac{1}{\hbar}\mathbbm{S}_{mn}\left(\omega p\frac{q_m-q_n}{2}+i\dot{p}\frac{q_m+q_n}{2}\right)$$
+$$\mathbbm{H}_{mn}-i\hbar\tau_{mn}=\mathbbm{S}_{mn}\left(\frac{\hbar\omega}{4}-%
+							 \frac{1}{2}m\omega^2\left(\frac{q_m-q_n}{2}\right)^2+%
+							 \frac{p^2}{2m}+%
+							 \frac{1}{2}\dot{p}(q_m+q_n)\right)+\mymean{g_m}{V}{g_n}$$
+$$\left(\dot{D}_k^*D_k+D_k^*\dot{D}_k\right)=$$
+$$=\frac{i}{\hbar}\sum_{m,n=1}^N%
+   \left(\left(\mathbbm{S}^{-1}\right)^*_{km}(\mathbbm{H}_{mn}-i\hbar\tau_{mn})^*D_n^*D_k-%
+	 \left(\mathbbm{S}^{-1}\right)_{km}(\mathbbm{H}_{mn}-i\hbar\tau_{mn})D_k^*D_n\right)=$$
+$$=\frac{i}{\hbar}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{km}(\mathbbm{H}_{mn}-i\hbar\tau_{mn})(D_n^*D_k-D_k^*D_n)=$$
+$$=-\frac{2}{\hbar}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{km}(\mathbbm{H}_{mn}-i\hbar\tau_{mn})\mathit{Im}(D_n^*D_k)\neq 0$$
+
+\begin{align*}
+\frac{d}{dt}\mathit{eTr}(\mathbbm{H}) = & \sum_{k=1}^N\left(|D_k|^2%
+							    \frac{p}{m}%
+							    \left(\dot{p}+%
+								  \mymean{g_k}%
+									 {\frac{\partial V}%
+									       {\partial x}}%
+									 {g_k}%
+							    \right)-\right. \\
+ 					&\qquad-\left.\frac{2}{\hbar}\mathbbm{H}_{kk}%
+							    \sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{km}%
+									  (\mathbbm{H}_{mn}-i\hbar\tau_{mn})%
+									  \mathit{Im}(D_n^*D_k)%
+						      \right)=\\
+= & \dot{p}\sum_{k=1}^N\left(|D_k|^2\frac{p}{m}-%
+			   \frac{1}{\hbar}\mathbbm{H}_{kk}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{km}%
+									\mathbbm{S}_{mn}(q_m+q_n)\mathit{Im}(D_n^*D_k)%
+		       \right)-\\
+&\hspace{-0.25cm}-\sum_{k=1}^N\left(|D_k|^2\frac{p}{m}\mymean{g_k}{\frac{\partial V}{\partial x}}{g_k}-\right.\\
+&\hspace{1.2cm}\left.	     -\frac{2}{\hbar}\mathbbm{H}_{kk}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{km}\mathbbm{S}_{mn}%
+								    \left(\frac{\hbar\omega}{4}+%
+									  \frac{p^2}{2m}-\right.\right.\\
+&\hspace{7cm}\left.\left.						 -\frac{1}{2}m\omega^2\left(\frac{q_m-q_n}{2}\right)^2\right)\mathit{Im}(D_n^*D_k)-\right.\\
+&\hspace{1.2cm}\left. 	     -\frac{2}{\hbar}\mathbbm{H}_{kk}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{km}\mymean{g_m}{V}{g_n}\mathit{Im}(D_n^*D_k)\right)=\\
+= & \dot{p}\sum_{k=1}^N\left(|D_k|^2\frac{p}{m}-%
+			   \frac{1}{\hbar}\mathbbm{H}_{kk}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{km}%
+									\mathbbm{S}_{mn}q_m\mathit{Im}(D_n^*D_k)%
+		       \right)-\\
+&\hspace{-0.25cm}-\sum_{k=1}^N\left(|D_k|^2\frac{p}{m}\mymean{g_k}{\frac{\partial V}{\partial x}}{g_k}-\right.\\
+&\hspace{1.2cm}\left.	     -\frac{m\omega^2}{4\hbar}\mathbbm{H}_{kk}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{km}\mathbbm{S}_{mn}%
+								    \left(2q_mq_n-q_m^2\right)\mathit{Im}(D_n^*D_k)-\right.\\
+&\hspace{1.2cm}\left. 	     -\frac{2}{\hbar}\mathbbm{H}_{kk}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{km}\mymean{g_m}{V}{g_n}\mathit{Im}(D_n^*D_k)\right)=0
+\end{align*}
+
+$$\dot{p} = \frac{\underset{k=1}{\overset{N}{\sum}}|D_k|^2\mymean{g_k}{\frac{\partial V}{\partial x}}{g_k}}%
+		 {\underset{k=1}{\overset{N}{\sum}}|D_k|^2-%
+			 \frac{m}{\hbar p}\mathbbm{H}_{kk}\underset{m,n=1}{\overset{N}{\sum}}\left(\mathbbm{S}^{-1}\right)_{km}%
+									\mathbbm{S}_{mn}q_m\mathit{Im}(D_n^*D_k)}+$$
+
+$$	   +\frac{\frac{2m}{\hbar p}\mathbbm{H}_{kk}%
+			      \underset{m,n=1}{\overset{N}{\sum}}%
+			      \left(\mathbbm{S}^{-1}\right)_{km}\mathit{Im}(D_n^*D_k)%
+					    \left(\mymean{g_m}{V}{g_n}+%
+						  \frac{m\omega^2}{8}\mathbbm{S}_{mn}(2q_mq_n-q_m^2)\right)}
+		 {\underset{k=1}{\overset{N}{\sum}}|D_k|^2-%
+			 \frac{m}{\hbar p}\mathbbm{H}_{kk}\underset{m,n=1}{\overset{N}{\sum}}\left(\mathbbm{S}^{-1}\right)_{km}%
+									\mathbbm{S}_{mn}q_m\mathit{Im}(D_n^*D_k)}$$
+

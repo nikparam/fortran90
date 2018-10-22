@@ -7,20 +7,32 @@ SUBROUTINE FEXALL( N, T, Y, YDOT, RPAR, IPAR )
 	DOUBLE COMPLEX, INTENT(IN) :: Y(N)
 	DOUBLE COMPLEX, INTENT(OUT) :: YDOT(N)
 
-	INTEGER :: i, mean, key, NumG, npts, IPIV( ipar(1) ), INFO
+	INTEGER :: i, j, mean, key, NumG, npts, IPIV( ipar(1) ), INFO
 	DOUBLE PRECISION :: m, params(15), lambda, &
-			    curvature, xi, xi_prime, rho, z_lambda(ipar(1))
+			    Norm_D
 
 	DOUBLE PRECISION :: omega( IPAR(1) ), phase( IPAR(1) ), &
 			    x( IPAR(4) ), wts( IPAR(4) ), &
 			    q( IPAR(1) ), p( IPAR(1) ), &
-			    dV( IPAR(1) ), dV_mean 
+			    dV( IPAR(1) ), dV_mean
 
 	DOUBLE COMPLEX :: ksi( IPAR(1) ), eta( IPAR(1) ), &
 			  S( IPAR(1), IPAR(1) ), H( IPAR(1), IPAR(1) ), &
-			  L( IPAR(1), IPAR(1) ), &
+			  L( IPAR(1), IPAR(1) ), tmp, &
 			  M1( IPAR(1), IPAR(1) ), M2( IPAR(1), IPAR(1) ), &
 			  R( IPAR(1), IPAR(1) ), D( IPAR(1) ), dV_matrix(ipar(1),ipar(1))
+
+	INTERFACE
+		SUBROUTINE potential_energy( x, params, V )
+			DOUBLE PRECISION, INTENT(IN) :: x, params(15)
+			DOUBLE PRECISION, INTENT(OUT) :: V
+		END SUBROUTINE potential_energy
+		SUBROUTINE diff_potential_energy( x, params, V )
+			DOUBLE PRECISION, INTENT(IN) :: x, params(15)
+			DOUBLE PRECISION, INTENT(OUT) :: V
+		END SUBROUTINE diff_potential_energy
+
+	END INTERFACE
 
 	NumG = IPAR(1)
 	key = IPAR(2)
@@ -43,18 +55,25 @@ SUBROUTINE FEXALL( N, T, Y, YDOT, RPAR, IPAR )
 	CALL overlap(NumG, ksi, eta, m, omega, S)
 	CALL hamiltonian(NumG, key, ksi, eta, m, omega, params, npts, x, wts, S, H, L, M1, M2)
 
-	CALL diff_potential_energy(q(1),params,dV(1))
-
 	IF ( mean .EQ. 0 ) THEN
 		CALL quadrature( NumG, diff_potential_energy, ksi, eta, x, wts, npts, m, omega, params, dV_matrix )
 		DO i = 1, NumG
 			dV(i) = DBLE( dV_matrix(i,i) )
 		END DO
-	ELSE
+	ELSE IF( mean .EQ. 1 ) THEN
 		CALL quadrature( NumG, diff_potential_energy, ksi, eta, x, wts, npts, m, omega, params, dV_matrix )
-
 		dV_mean = DOT_PRODUCT( D, MATMUL( dV_matrix, D ) )
 		dV = (/ ( dV_mean, i=1,NumG ) /)
+	ELSE IF ( mean .EQ. 2 ) THEN
+		CALL quadrature( NumG, diff_potential_energy, ksi, eta, x, wts, npts, m, omega, params, dV_matrix )
+		dV_mean = SUM( (/ ( dV_matrix(i,i), i = 1, NumG ) /) )
+		dV = (/ ( dV_mean / NumG, i = 1, NumG ) /)
+	ELSE
+		CALL quadrature( NumG, diff_potential_energy, ksi, eta, x, wts, npts, m, omega, params, dV_matrix )
+		Norm_D = SUM( (/ ( CONJG(D(i))*D(i), i=1,NumG ) /) )
+		dV_mean = SUM( (/ ( dV_matrix(i,i) * CONJG(D(i)) * D(i), i=1,NumG ) /) )
+		dV = (/ ( dV_mean / Norm_D, i=1,NumG ) /)
+	
 	END IF
 
 	CALL coeff_matrix( NumG, m, params, omega, lambda, ksi, dV, S, H, M1, R )

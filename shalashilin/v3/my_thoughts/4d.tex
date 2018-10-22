@@ -1,0 +1,48 @@
+Итак, мы хотим:
+\begin{enumerate}
+\item Иметь "взвешенный" след $\Rightarrow$ "взвешенный" градиент
+\item Веса должны иметь смысл вероятностей (сумма равна единице)
+\item Градиент должен иметь "простой" вид и понятный физический смысл (желательно)
+\end{enumerate}
+
+В общем виде это можно записать следующим образом:
+$$\mathit{eTr}(\mathbbm{H})=\sum_{i=1}^N\mathbbm{H}_{ii}P_i, \sum_{i=1}^NP_i=1$$
+
+Рассмотрим такое выражение для вероятности:
+$$P_i=\frac{1}{2}\sum_{j=1}^N\mathbbm{S}_{ij}\left(D_i^*D_j+D_iD_j^*\right)$$
+$$\sum_{i=1}^NP_i=\left(\vec{D}^{\dagger}\mathbbm{S}\vec{D}\right)=1$$
+$$\mathit{eTr}(\mathbbm{H})=\sum_{i=1}^N\mathbbm{H}_{ii}P_i,\ %
+  \frac{d}{dt}\mathit{eTr}(\mathbbm{H})=\sum_{i=1}^N\dot{\mathbbm{H}}_{ii}P_i+%
+						    \mathbbm{H}_{ii}\dot{P}_i$$
+$$\dot{P}_i=\frac{1}{2}\sum_{j=1}^N\mathbbm{S}_{ij}\left(\dot{D}_i^*D_j+%
+							 D_i^*\dot{D}_j+%
+							 \dot{D}_iD_j^*+%
+							 D_i\dot{D}_j^*%
+						    \right)$$
+$$\mathbbm{R}_{mn}=\mathbbm{H}_{mn}-i\hbar\tau_{mn}$$
+
+$$\dot{D}_i^*D_j=\frac{i}{\hbar}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{im}%
+						    \mathbbm{R}_{mn}D_n^*D_j$$
+$$D_i^*\dot{D}_j=-\frac{i}{\hbar}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{jm}%
+						     \mathbbm{R}_{mn}D_i^*D_n$$
+$$\dot{D}_iD_j^*=-\frac{i}{\hbar}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{im}%
+						     \mathbbm{R}_{mn}D_nD_j^*$$
+$$D_i\dot{D}_j^*=\frac{i}{\hbar}\sum_{m,n=1}^N\left(\mathbbm{S}^{-1}\right)_{jm}%
+						    \mathbbm{R}_{mn}D_n^*D_i$$
+$$\dot{P}_i=\frac{i}{2\hbar}\sum_{j,m,n=1}^N\mathbbm{S}_{ij}\mathbbm{R}_{mn}%
+					    \left(\left(\mathbbm{S}^{-1}\right)_{im}(D_n^*D_j-D_nD_j^*)+%
+					          \left(\mathbbm{S}^{-1}\right)_{jm}(D_n^*D_i-D_nD_i^*)\right)=$$
+$$=-\frac{1}{\hbar}\left(\sum_{n,m=1}^N\delta_{im}\mathbbm{R}_{mn}\mathit{Im}(D_n^*D_i)+%
+			 \sum_{j,n,m=1}^N\mathbbm{S}_{ij}\mathbbm{R}_{mn}%
+					 \left(\mathbbm{S}^{-1}\right)_{im}\mathit{Im}(D_n^*D_j)\right)=$$
+$$=-\frac{1}{\hbar}\left(\sum_{n=1}^N\mathbbm{R}_{im}\mathit{Im}(D_n^*D_i)+%
+			 \sum_{j,n,m=1}^N\mathbbm{S}_{ij}\mathbbm{R}_{mn}%
+					 \left(\mathbbm{S}^{-1}\right)_{im}\mathit{Im}(D_n^*D_j)\right)=...$$
+$$\left[\mathbbm{R}_{mn}=%
+  \mathbbm{H}_{mn}-i\hbar\tau_{mn}=\mathbbm{S}_{mn}\mathbbm{A}_{mn}+\mymean{g_m}{V}{g_n}\right]$$
+\begin{align*}
+...=-\frac{1}{\hbar}&\left(\sum_{n=1}^N(\mathbbm{S}_{in}\mathbbm{A}_{in}+\mymean{g_i}{V}{g_n})\mathit{Im}(D_n^*D_i)+\right.\\
++&\left.		   \sum_{j,m,n=1}^N\mathbbm{S}_{ij}\left(\mathbbm{S}^{-1}\right)_{im}%
+					    (\mathbbm{S}_{mn}\mathbbm{A}_{mn}+\mymean{g_m}{V}{g_n})\mathit{Im}(D_n^*D_j)\right)
+\end{align*}
+

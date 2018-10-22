@@ -1,0 +1,39 @@
+Пускай наши базисные функции имеют вид:
+$$|g_k\rangle = \left(\frac{m\omega}{\hbar\pi}\right)^{1/4}%
+		\myexp{\frac{1}{\hbar}\left(-\frac{1}{2}m\omega (x-q_k)^2 + ipx \right)}$$
+Тогда след матрицы Гамильтона имеет вид:
+$$\mathit{Tr}(\mathbbm{H}) = N \left( \frac{\hbar\omega}{4} + \frac{p^2}{2m} \right) + %
+			     \sum_{k=1}^N \mymean{g_k}{V}{g_k}$$
+Потребуем, чтобы след матрицы Гамильтона являлся интегралом движения. Тогда имеем следующее:
+$$0=\frac{d}{dt}\mathit{Tr}{\mathbbm{H}}=%
+   \frac{Np}{m}\dot{p}+\sum_{k=1}^N(\mymean{\dot{g}_k}{V}{g_k}+\mymean{g_k}{V}{\dot{g}_k})=$$
+$$=\frac{Np}{m}\dot{p}+\frac{1}{\hbar}%
+		       \sum_{k=1}^N\left(\mymean{g_k}{V}{g_k}(\dot{\eta}_k^*+\dot{\eta}_k)+%
+					\mymean{g_k}{Vx}{g_k}(\dot{\xi}_k^*+\dot{\xi}_k)\right)=$$
+$$=\frac{Np}{m}\dot{p}+\frac{1}{\hbar}%
+		       \sum_{k=1}^N\left(-2m\omega q_k\dot{q}_k\mymean{g_k}{V}{g_k}+%
+					2m\omega\dot{q}_k\mymean{g_k}{Vx}{g_k}\right)=$$
+$$=\frac{Np}{m}\left(\dot{p}+\frac{2m\omega}{N\hbar}%
+			     \sum_{k=1}^N\left(\mymean{g_k}{Vx}{g_k}-%
+					       q_k\mymean{g_k}{V}{g_k}\right)%
+	       \right)$$
+$$\dot{p}=-\frac{2m\omega}{N\hbar}\sum_{k=1}^N\mymean{g_k}{V(x-q_k)}{g_k}$$
+Распишем последний интеграл в явном виде:
+$$\mymean{g_k}{V(x-q_k)}{g_k}=%
+  \left(\frac{m\omega}{\hbar\pi}\right)^{1/2}\int_{-\infty}^{\infty}%
+  \myexp{-\frac{m\omega}{\hbar}(x-q_k)^2}(x-q_k)V(x)\,dx=$$
+$$=-\frac{1}{2}\left(\frac{\hbar}{m\omega\pi}\right)^{1/2}\int_{-\infty}^{\infty}V(x)\,d\myexp{-\frac{m\omega}{\hbar}(x-q_k)^2}=$$
+$$=-\left.\frac{1}{2}\left(\frac{\hbar}{m\omega\pi}\right)^{1/2}V(x)\myexp{-\frac{m\omega}{\hbar}(x-q_k)^2}\right|_{-\infty}^{\infty}+$$
+$$+\frac{1}{2}\left(\frac{\hbar}{m\omega\pi}\right)^{1/2}%
+   \int_{\infty}^{\infty}%
+   \myexp{-\frac{m\omega}{\hbar}(x-q_k)^2}%
+   \frac{\partial V}{\partial x}\,dx$$
+Первое слагаемое равно нулю. Рассмотрим второе:
+$$\frac{1}{2}\left(\frac{\hbar}{m\omega\pi}\right)^{1/2}%
+  \int_{\infty}^{\infty}%
+  \myexp{-\frac{m\omega}{\hbar}(x-q_k)^2}%
+  \frac{\partial V}{\partial x}\,dx=\frac{\hbar}{2m\omega}\mymean{g_k}{\frac{\partial V}{\partial x}}{g_k}$$
+Таким образом, выражение для $\dot{p}$ принимает вид:
+$$\dot{p} = -\frac{1}{N}\sum_{k=1}^N\mymean{g_k}{\frac{\partial V}{\partial x}}{g_k}$$
+В случае двух функций новый градиент имеет вид:
+$$\dot{p}=-\frac{\hbar\Omega}{Nl}\sum_k\myexp{-\frac{q_k}{l}+\frac{\hbar}{4m\omega l^2}}$$

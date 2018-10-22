@@ -1,7 +1,7 @@
 Рассмотрим динамику Гауссовых волновых пакетов в гармоническом потенциале:
 $$|\Psi\rangle = \sum_k D_k|g_k\rangle$$
 $$V = \frac{1}{2}m\omega^2x^2,\ \dot{q}_k=\frac{p_k}{m},\ \dot{p}_k=-\left.\frac{\partial V}{\partial x}\right|_{q_k}=-m\omega^2q_k $$
-$$\dot{\vec{D}} = -\frac{i}{\hbar}\mathbbm{S}(\mathbbm{H}-i\hbar\tau)\vec{D}$$
+$$\dot{\vec{D}} = -\frac{i}{\hbar}\mathbbm{S}^{-1}(\mathbbm{H}-i\hbar\tau)\vec{D}$$
 Для удобства проведем замену переменных:
 $$g_k=N\myexp{\frac{1}{\hbar}\left(-\frac{1}{2}m\omega(x-q_k)^2+ip_kx\right)}=%
        \myexp{\frac{1}{\hbar}\left(-\frac{1}{2}m\omega x^2 + \xi_kx + \eta_k\right)}$$
@@ -115,18 +115,14 @@ D(t)=D(0)\myexp{-\frac{i}{\hbar}\left(\frac{\hbar\omega t}{2}+\myl(0)\frac{\sin(
 \end{equation}
 
 Проверим, что при данном способе задания динамики сохраняется норма:
+$$\dot{\vec{D}}=-\frac{i}{\hbar}\mathbbm{S}^{-1}(\mathbbm{H}-i\hbar\tau)\vec{D}$$
 $$\myint{\Psi}{\Psi}=\vec{D}^{\dagger}\mathbbm{S}\vec{D},\ %
   \frac{d}{dt}\myint{\Psi}{\Psi}=2Re(\vec{D}^{\dagger}\mathbbm{S}\dot{\vec{D}})+\vec{D}^{\dagger}\dot{\mathbbm{S}}\vec{D}$$
 $$\vec{D}^{\dagger}\mathbbm{S}\dot{\vec{D}}=%
   -\frac{i}{\hbar}\vec{D}^{\dagger}\mathbbm{S}\mathbbm{S}^{-1}(\mathbbm{H}-i\hbar\tau)\vec{D}=%
   -\frac{i}{\hbar}\vec{D}^{\dagger}(\mathbbm{H}-i\hbar\tau)\vec{D}$$
+$$\dot{\vec{D}}^{\dagger}\mathbbm{S}\vec{D}+\vec{D}^{\dagger}\mathbbm{S}\dot{\vec{D}}=%
+  \frac{i}{\hbar}\vec{D}^{\dagger}\left(\mathbbm{H}+i\hbar\tau^{\dagger}-\mathbbm{H}+i\hbar\tau\right)\vec{D}=%
+  -\vec{D}^{\dagger}\left(\tau^{\dagger}+\tau\right)\vec{D}=-\vec{D}^{\dagger}\dot{\mathbbm{S}}\vec{D}$$
+$$\frac{d}{dt}\myint{\Psi}{\Psi}=-\vec{D}^{\dagger}\dot{\mathbbm{S}}\vec{D}+\vec{D}\dot{\mathbbm{S}}\vec{D}=0$$
 
-Элемента матрицы $\mathbbm{H}-i\hbar\tau\in\mathbbm{R}$. Следовательно, $\vec{D}\mathbbm{S}\dot{\vec{D}}$ чисто мнимое. 
-Тогда первое слагаемое в выражении $\myint{\Psi}{\Psi}'_t$ равно $0$.
-Изучим второе слагаемое:
-$$\vec{D}^{\dagger}\dot{\mathbbm{S}}\vec{D} = \sum_{m,k}D_m^*D_k(\myint{\dot{g}_m}{g_k} + \myint{g_m}{\dot{g}_k})=%
-					      \sum_{m,k}D_m^*D_k\myint{g_k}{\dot{g}_m}^*+\sum_{m,k}D_m^*D_k\myint{g_m}{\dot{g}_k}=$$
-$$=\left(\sum_{m,k}D_mD_k^*\myint{g_k}{\dot{g}_m}\right)^*+\sum_{m,k}D_m^*D_k\myint{g_m}{\dot{g}_k}=$$
-$$=2\mathit{Re}\left(\sum_{m,k}D_m^*D_k\tau_{mk}\right)$$
-
-Матрица $\tau$ антисимметрична, ее диагональные элементы чисто мнимые. Поэтому и второе слагаемое равно нулю.
